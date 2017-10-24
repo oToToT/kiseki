@@ -1,0 +1,260 @@
+\documentclass[a4paper,10pt,twocolumn,oneside]{article}
+\setlength{\columnsep}{10pt}                                                                    %兩欄模式的間距
+\setlength{\columnseprule}{0pt}                                                                %兩欄模式間格線粗細
+
+\usepackage{amsthm}								%定義，例題
+\usepackage{amssymb}
+%\usepackage[margin=2cm]{geometry}
+\usepackage{fontspec}								%設定字體
+\usepackage{color}
+\usepackage[x11names]{xcolor}
+\usepackage{xeCJK}								%xeCJK
+\usepackage{listings}								%顯示code用的
+%\usepackage[Glenn]{fncychap}						%排版，頁面模板
+\usepackage{fancyhdr}								%設定頁首頁尾
+\usepackage{graphicx}								%Graphic
+\usepackage{enumerate}
+\usepackage{titlesec}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+%\usepackage[T1]{fontenc}
+\usepackage{amsmath, courier, listings, fancyhdr, graphicx}
+\topmargin=0pt
+\headsep=5pt
+\textheight=780pt
+\footskip=0pt
+\voffset=-40pt
+\textwidth=545pt
+\marginparsep=0pt
+\marginparwidth=0pt
+\marginparpush=0pt
+\oddsidemargin=0pt
+\evensidemargin=0pt
+\hoffset=-42pt
+
+%\renewcommand\listfigurename{圖目錄}
+%\renewcommand\listtablename{表目錄} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\setmainfont{Consolas}				%主要字型
+\setmainfont{Helvetica}
+%\setmainfont{Linux Libertine G}
+\setmonofont{Courier New}
+%\setmonofont{Source Code Pro}
+%\setCJKmainfont{Source Han Sans}			%中文字型
+\setCJKmainfont{PingFang TC}
+%\setmainfont{sourcecodepro}
+\XeTeXlinebreaklocale "zh"						%中文自動換行
+\XeTeXlinebreakskip = 0pt plus 1pt				%設定段落之間的距離
+\setcounter{secnumdepth}{3}						%目錄顯示第三層
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\lst@CCPutMacro\lst@ProcessOther {"2D}{\lst@ttfamily{-{}}{-{}}}
+\@empty\z@\@empty
+\makeatother
+\lstset{											% Code顯示
+language=C++,										% the language of the code
+basicstyle=\footnotesize\ttfamily, 						% the size of the fonts that are used for the code
+%numbers=left,										% where to put the line-numbers
+numberstyle=\footnotesize,						% the size of the fonts that are used for the line-numbers
+stepnumber=1,										% the step between two line-numbers. If it's 1, each line  will be numbered
+numbersep=5pt,										% how far the line-numbers are from the code
+backgroundcolor=\color{white},					% choose the background color. You must add \usepackage{color}
+showspaces=false,									% show spaces adding particular underscores
+showstringspaces=false,							% underline spaces within strings
+showtabs=false,									% show tabs within strings adding particular underscores
+frame=false,											% adds a frame around the code
+tabsize=2,											% sets default tabsize to 2 spaces
+captionpos=b,										% sets the caption-position to bottom
+breaklines=true,									% sets automatic line breaking
+breakatwhitespace=false,							% sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)},							% if you want to add a comment within your code
+morekeywords={*},									% if you want to add more keywords to the set
+keywordstyle=\bfseries\color{Blue1},
+commentstyle=\itshape\color{Red4},
+stringstyle=\itshape\color{Green4},
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\footnotesize{\fontsize{8}{9}\selectfont}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyfoot{}
+%\fancyfoot[R]{\includegraphics[width=20pt]{ironwood.jpg}}
+\fancyhead[L]{oToToT Will Go To IOI2018}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\contentsname}{Contents} 
+
+\scriptsize
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+\section{Basic}
+\subsection{Default Code}
+\lstinputlisting{../codes/Basic/default.cpp}
+
+\subsection{IncreaseStackSize}
+\lstinputlisting{../codes/Basic/IncStack.cpp}
+
+\subsection{Pragma optimization}
+\lstinputlisting{../codes/Basic/Pragma.cpp}
+
+\section{Data Structure}
+\subsection{Bigint}
+\lstinputlisting{../codes/Data_Structure/Bigint.cpp}
+
+\subsection{Fraction}
+\lstinputlisting{../codes/Data_Structure/Fraction.cpp}
+
+\subsection{ScientificNotation}
+\lstinputlisting{../codes/Data_Structure/SciFi.cpp}
+
+\subsection{unordered\_map}
+\lstinputlisting{../codes/Data_Structure/hash_table.cpp}
+
+\subsection{extc\_balance\_tree}
+\lstinputlisting{../codes/Data_Structure/ExtTree.cpp}
+
+\subsection{extc\_heap}
+\lstinputlisting{../codes/Data_Structure/ExtHeap.cpp}
+
+\subsection{PairingHeap}
+\lstinputlisting{../codes/Data_Structure/PairingHeap.cpp}
+
+\subsection{Disjoint Set}
+\lstinputlisting{../codes/Data_Structure/DisjointSet.cpp}
+
+\subsection{Treap}
+\lstinputlisting{../codes/Data_Structure/Treap.cpp}
+
+\subsection{SparseTable}
+\lstinputlisting{../codes/Data_Structure/SparseTable.cpp}
+
+\section{Graph}
+
+\subsection{BCC Edge}
+\lstinputlisting{../codes/Graph/BCC_Edge.cpp}
+
+\subsection{BCC Vertex}
+\lstinputlisting{../codes/Graph/BCC_Vertex.cpp}
+
+\subsection{Strongly Connected Components}
+\lstinputlisting{../codes/Graph/Kosaraju.cpp}
+
+\subsection{Articulation Point}
+\lstinputlisting{../codes/Graph/ap.cpp}
+
+\subsection{Bipartie Matching}
+\lstinputlisting{../codes/Graph/BipartieMatching.cpp}
+
+\section{Math}
+\subsection{ax+by=gcd}
+\lstinputlisting{../codes/Math/ExtendedGCD.cpp}
+
+\subsection{Pollard Rho}
+\lstinputlisting{../codes/Math/PollardRho.cpp}
+
+\subsection{Linear Sieve}
+\lstinputlisting{../codes/Math/LinearSieve.cpp}
+
+\subsection{NloglogN Sieve}
+\lstinputlisting{../codes/Math/QuickSieve.cpp}
+
+\subsection{Miller Rabin}
+\lstinputlisting{../codes/Math/miller_rabin.cpp}
+
+\subsection{Inverse Element}
+\lstinputlisting{../codes/Math/Inverse.cpp}
+
+\subsection{Fast Fourier Transform}
+\lstinputlisting{../codes/Math/FFT_eddy.cpp}
+
+%\subsection{Chinese Remainder}
+%\lstinputlisting{../codes/Math/Chinese_Remainder.cpp}
+
+%\subsection{Fast Linear Recurrence}
+%\lstinputlisting{../codes/Math/Fast_Linear_Recurrence.cpp}
+
+\subsection{NTT}
+\lstinputlisting{../codes/Math/NTT_eddy.cpp}
+
+%\subsection{(+1) PolynomialGenerator}
+%\lstinputlisting{../codes/Math/PolyGen.cpp}
+
+%\subsection{Pseudoinverse of Square matrix}
+%\lstinputlisting{../codes/Math/Square_Matrix_pinv.cpp}
+
+%\newpage
+
+\section{Geometry}
+%\subsection{Point operators}
+%\lstinputlisting{../codes/Geometry/Point_operators/pdd.cpp}
+
+%\subsection{Intersection of two circles}
+%\input{../codes/Geometry/Intersection_of_two_circles/Intersection_of_two_circles.tex}
+%\lstinputlisting{../codes/Geometry/Intersection_of_two_circles/Intersection_of_two_circles.cpp}
+
+%\subsection{Intersection of two lines}
+%\lstinputlisting{../codes/Geometry/Intersection_of_two_lines/Intersection_of_two_lines.cpp}
+
+%TODO wrong when intersection is empty
+%\subsection{Half Plane Intersection}
+%\lstinputlisting{../codes/Geometry/Half_plane_intersection/half_plane_intersection.cpp}
+
+%\subsection{Point Class}
+%\lstinputlisting{../codes/Geometry/Point_operators/point_class.cpp}
+
+\subsection{2D Convex Hull}
+\lstinputlisting{../codes/Geometry/2D_ConvexHull.cpp}
+
+\subsection{SimulateAnnealing}
+\lstinputlisting{../codes/Geometry/SimulateAnnealing.cpp}
+
+%\subsection{3D Convex Hull}
+%\lstinputlisting{../codes/Geometry/Convex_Hull/3D_convex_hull.cpp}
+
+%\subsection{Minimum Covering Circle}
+%\lstinputlisting{../codes/Geometry/Minimum_covering_circle/mcc.cpp}
+
+%\subsection{KDTree (Nearest Point)}
+%\lstinputlisting{../codes/Geometry/KD_tree/KD_Tree.cpp}
+
+%\subsection{Triangulation}
+%\lstinputlisting{../codes/Geometry/triangulation/triangulation.cpp}
+
+%\subsection{(+1) MinkowskiSum}
+%\lstinputlisting{../codes/Geometry/Minkowski_Sum/Minkowski_Sum.cpp}
+
+\section{Stringology}
+\subsection{Suffix Array}
+\lstinputlisting{../codes/String/Suffix_Array.cpp}
+
+%\subsection{Aho-Corasick Algorithm}
+%\lstinputlisting{../codes/Stringology/Automata/Aho-Corasick.cpp}
+
+\subsection{KMP}
+\lstinputlisting{../codes/String/KMP.cpp}
+
+%\subsection{Z value}
+%\lstinputlisting{../codes/Stringology/Z_Value/zvalue.cpp}
+
+%\subsection{Z value (palindrome ver.)}
+%\lstinputlisting{../codes/Stringology/Z_Value/zvalue_palindrome.cpp}
+
+%\subsection{palindromic tree}
+%\lstinputlisting{../codes/Stringology/palindromic_tree/palindromic_tree.cpp}
+
+%\subsection{Lexicographically Smallest Rotation}
+%\lstinputlisting{../codes/Stringology/smallest_rotation/smallest_rotation.cpp}
+
+%\subsection{Suffix Automaton}
+%\lstinputlisting{../codes/Stringology/Automata/SAM.cpp}
+
+\end{document}

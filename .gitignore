@@ -1,0 +1,6 @@
+// remove some useless thing for compiling
+*.log
+*.aux
+*.toc
+*.fls
+*.fdb_latexmk
