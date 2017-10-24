@@ -4,3 +4,6 @@
 *.toc
 *.fls
 *.fdb_latexmk
+
+//remove some useless thing from mac
+._codebook.pdf
