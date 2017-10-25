@@ -68,7 +68,7 @@ void DEBUG(const T& head,const Args& ...tail){
 /* Let's debug with Nico~Nico~Ni */
 
 int main(int argc, char* argv[]){
-	if(argc>1 and string(argv[0])=="-D") debug=1;
+	if(argc>1 and string(argv[1])=="-D") debug=1;
 	if(!debug){ios_base::sync_with_stdio(0);cin.tie(0);}
 	return 0;
 }
