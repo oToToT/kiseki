@@ -60,7 +60,7 @@ ostream& operator <<( ostream &s, const vector<T> &c ) { return _out(s,ALL(c)); 
 bool debug = 0;
 #define DUMP(x) if(debug) cerr<<__PRETTY_FUNCTION__<<":"<<__LINE__<<" - "<<#x<<"="<<x<<'\n'
 template<typename T>
-void DEBUG(const T& x){if(debug) cerr<<x<<'\n';}
+void DEBUG(const T& x){if(debug) cerr<<x;}
 template<typename T, typename... Args>
 void DEBUG(const T& head,const Args& ...tail){
 	if(debug){cerr<<head; DEBUG(tail...);}
