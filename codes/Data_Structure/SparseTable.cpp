@@ -1,20 +1,25 @@
 #include <algorithm>
 using std::min;
-
+ 
+const int N = 1<<20;
+const int LOG_N = 21;
+ 
 class SparseTable{
 	private:
-		int table[30][N];
+		int table[N][LOG_N];
 	public:
-		void init(int n, int arr[]){
-			for(int i=0;i<n;i++)
-				table[0][i]=arr[i];
-			for(int i=1;(1<<i)<=n;i++)
-				for(int j=0;(1<<i)+j<=N;j++)
-					table[i][j]=min(table[i-1][j],table[i-1][j+(1<<(i-1))]);
+		void build(int n, int arr[]){
+			// [1, n]
+			for(int i=1;i<=n;i++) table[i][0] = arr[i];
+			for(int j=1;(1<<j)<=n;j++){
+				for(int i=1;i+(1<<j)-1<=n;i++){
+					table[i][j] = min(table[i][j-1], table[i+(1<<(j-1))][j-1]);
+				}
+			}
 		}
-		void query(int l, int r){
-			//0-base [l, r]
-			int k = 31-__builtin_clz(r-l);
-			return min(minSTable[k][l], minSTable[k][r-(1<<k)+1]);
+		int query(int l, int r){
+			// 1-base [l, r]
+			int k = 31-__builtin_clz(r-l+1);
+			return min(table[l][k], table[r-(1<<k)+1][k]);
 		}
 };
