@@ -1,9 +1,13 @@
-// remove some useless thing for compiling
+// Latex
 *.log
 *.aux
 *.toc
 *.fls
 *.fdb_latexmk
 
-//remove some useless thing from mac
+// Maciontish
 ._codebook.pdf
+._README.md
+
+// Visual Studio Code
+.vscode
