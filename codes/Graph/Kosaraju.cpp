@@ -1,42 +1,45 @@
-struct Scc{
-	int n, nScc, vst[MXN], bln[MXN];
-	vector<int> E[MXN], rE[MXN], vec;
-	void init(int _n){
-		n = _n;
-		for (int i=0; i<n; i++){
-			E[i].clear();
-			rE[i].clear();
+class SCC{
+	private:
+		int n, num_;
+		vector<int> G[N], rG[N], ord, num;
+		bool vis[N];
+		void dfs(int u){
+			if(vis[u]) return;
+			vis[u]=1;
+			for(auto v: G[u]) dfs(v);
+			ord.PB(u);
 		}
-	}
-	void add_edge(int u, int v){
-		E[u].PB(v);
-		rE[v].PB(u);
-	}
-	void DFS(int u){
-		vst[u]=1;
-		for (auto v : E[u])
-			if (!vst[v]) DFS(v);
-		vec.PB(u);
-	}
-	void rDFS(int u){
-		vst[u] = 1;
-		bln[u] = nScc;
-		for (auto v : rE[u])
-			if (!vst[v]) rDFS(v);
-	}
-	void solve(){
-		nScc = 0;
-		vec.clear();
-		for (int i=0; i<n; i++) vst[i] = 0;
-		for (int i=0; i<n; i++)
-			if (!vst[i]) DFS(i);
-		reverse(vec.begin(),vec.end());
-		for (int i=0; i<n; i++) vst[i] = 0;
-		for (auto v : vec){
-			if (!vst[v]){
-				rDFS(v);
-				nScc++;
+		void rdfs(int u){
+			if(vis[u]) return;
+			num[u] = num_;
+			vis[u] = 1;
+			for(auto v: rG[u]) rdfs(v);
+		}
+	public:
+		inline void init(int n_){
+			n=n_, num_=0;
+			num.resize(n);
+			for(int i=0;i<n;i++) G[i].clear();
+			for(int i=0;i<n;i++) rG[i].clear();
+		}
+		inline void add_edge(int st, int ed){
+			G[st].PB(ed);
+			rG[ed].PB(st);
+		}
+		void solve(){
+			memset(vis, 0, sizeof(vis));
+			for(int i=0;i<n;i++){
+				if(!vis[i]) dfs(i);
+			}
+			reverse(ALL(ord));
+			memset(vis, 0, sizeof(vis));
+			for(auto i: ord){
+				if(!vis[i]){
+					rdfs(i);
+					num_++;
+				}
 			}
 		}
-	}
-};
+		inline int get_id(int x){return num[x];}
+		inline int count(){return num_;}
+} scc;
