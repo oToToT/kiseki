@@ -1,67 +1,65 @@
 #include <vector>
 using std::vector;
 
-template<typename T>
+template<class __type, class __cmp=less<__type>>
 class pairingHeap{
 	private:
-		struct pairingNode{
-			T val;
-			vector<pairingNode*> child;
-		};
+	    struct pairingNode{
+    	    __type val;
+            vector<pairingNode*> child;
+            pairingNode(){
+                val = 0;
+                child.clear();
+            }
+            pairingNode(int x): val(x){
+                child.clear();
+            }
+	    };
 		pairingNode* root;
-		size_t count=0;
-	public:
-		pairingHeap(){root=NULL;count=0;}
-		inline bool empty(){return count==0;}
-		inline T top(){return root->val;}
-		inline size_t size(){return count;}
-		inline void push(T a){
-			count++;
-			if(root==NULL){
-				root = new pairingNode;
-				root->val=a;
-			}else{
-				auto temp = new pairingNode;
-				temp->val=a;
-				if(root->val>=temp->val)
-					root->child.push_back(temp);
-				else{
-					temp->child.push_back(root);
-					swap(temp,root);
-				}
-			}
+		int count;
+		__cmp _cp;
+		void remove(pairingNode* cur){
+		    if(cur==nullptr) return;
+		    for(auto i: cur->child) remove(i);
+		    delete cur;
 		}
-		inline void join(pairingHeap& a){
-			count+=a.size();
-			auto temp = a.root;
-			if(root->val>=temp->val){
-				root->child.push_back(temp);
-			}else{
-				temp->child.push_back(root);
-				swap(temp,root);
+	public:
+		pairingHeap(){root=nullptr;count=0;}
+		inline bool empty(){return count==0;}
+		inline __type top(){return root->val;}
+		inline int size(){return count;}
+		inline void clear(){remove(root);root=nullptr;count=0;}
+		inline void push(__type a){
+			count++;
+			auto mynode = new pairingNode(a);
+			if(root==nullptr) root = mynode;
+			else{
+				if(_cp(root->val, mynode->val)) swap(root, mynode);
+				root->child.push_back(mynode);
 			}
-			a.root=nullptr;
-			a.count=0;
 		}
 		inline void pop(){
 			count--;
-			queue<pairingNode*> QQ;
-			for(auto i:root->child) QQ.push(i);
+			queue<pairingNode*> que;
+			for(auto i:root->child) que.push(i);
 			delete root;
-			while(QQ.size()>1){
-				pairingNode* tp1=QQ.front();QQ.pop();
-				pairingNode* tp2=QQ.front();QQ.pop();
-				if(tp1->val>tp2->val){
-					tp1->child.push_back(tp2);
-					QQ.push(tp1);
-				}else{
-					tp2->child.push_back(tp1);
-					QQ.push(tp2);
-				}
+			while(que.size() > 1){
+				auto tp1=que.front();que.pop();
+				auto tp2=que.front();que.pop();
+				if(_cp(tp1->val, tp2->val)) swap(tp1, tp2);
+				tp1->child.push_back(tp2);
+				que.push(tp1);
 			}
-			if(QQ.empty()) root=NULL;
-			else root = QQ.front();
-		}	
+			if(que.empty()) root=nullptr;
+			else root = que.front();
+		}
+		inline void join(pairingHeap<__type, __cmp>& pq2){
+		    if(_cp(root->val, pq2.root->val)) swap(root, pq2.root);
+		    root->child.push_back(pq2.root);
+			count += pq2.count;
+		    pq2.root = nullptr;
+		    pq2.count = 0;
+		}
 };
 
 int main(){
