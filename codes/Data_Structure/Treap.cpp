@@ -2,38 +2,60 @@
 
 class Treap{
 	private:
+		const int MEM = 500000 + 5;
+		unsigned seed;
+		inline unsigned myrand(){
+			seed = seed*seed*127 + seed*227 + 2147483587;
+			seed ^= seed*97;
+			return seed;
+		}
 		struct node{
-			node* l;
-			node* r;
-			int pri,size,val;
-			node(){l=NULL;r=NULL;pri=rand();size=0;}
-			node(int x){l=NULL;r=NULL;pri=rand();size=1;val=x;}
-			~node(){if(l)delete l;if(r)delete r;l=NULL;r=NULL;}
-		};
-		node* root;
-		inline int gSize(node* x){return (x==NULL)?0:(x->size);}
-		node* merge(node* x,node* y){
-			if(x==NULL||y==NULL)return x?x:y;
-			else if(x->pri > y->pri){
-				x->r = merge(x->r,y);
-				x->size = gSize(x->l)+gSize(x->r)+1;
-				return x;
+			node *lc, *rc;
+			int pri, size, val;
+			node(){}
+			node(int x): 
+				lc(nullptr), 
+				rc(nullptr),
+				pri(myrand()),
+				size(1), 
+				val(x)
+				{}
+			inline void pull(){
+				size = 1;
+				if(lc) size += lc->size;
+				if(rc) size += rc->size;
+			}
+		} *root, pool[MEM];
+		int mem_;
+		inline node* new_node(int x){
+			static int mem_ = 0;
+			assert(mem_ < MEM);
+			pool[mem_]=node(x);
+			return &pool[mem_++];
+		}
+		inline int sz(node* x){return x?x->size:0;}
+		node* merge(node *a, node *b){
+			if(!a or !b) return a?a:b;
+			if(a->pri > b->pri){
+				a->rc = merge(a->rc, b);
+				a->pull();
+				return a;
 			}else{
-				y->l = merge(x,y->l);
-				y->size = gSize(y->l)+gSize(y->r)+1;
-				return y;
+				b->lc = merge(a, b->lc);
+				b->pull();
+				return b;
 			}
 		}
-		void split(node* rr, int x, node*& l, node*& r){
-			if(rr==NULL)r=l=NULL;
-			else if(rr->val <= x){
-				l=rr;
-				split(rr->r, x, l->r, r);
-				l->size = gSize(l->r)+gSize(l->l)+1;
+		void split(Treap* t, int k, Treap*& a, Treap*& b){
+			if(!t) a=b=nullptr;
+			else if(sz(t->lc) < k){
+				a = t;
+				split(t->rc, k - sz(t->lc) - 1 , a->rc, b);
+				a->pull();
 			}else{
-				r=rr;
-				split(rr->l, x, l, r->l);
-				r->size = gSize(r->r)+gSize(r->l)+1;
+				b = t;
+				split(t->lc, k, a, b->lc);
+				b->pull();
 			}
 		}
 		int oOk(node* rr, int x){
@@ -42,8 +64,13 @@ class Treap{
 			else return oOk(rr->l, x);
 		}
 	public:
-		Treap(){root=NULL;}
-		~Treap(){delete root;root=NULL;}
+		Treap(){root=nullptr;seed=time(NULL);mem_=0;}
+		void do_something_at(int l, int r){
+			// 1-base [l, r]
+			split(root, l-1, tl, root);
+			split(root, r-l+1, root, tr);
+			root = merge(tl, merge(root, tr));
+		}
 		void insert(int x){
 			node *a, *b;
 			split(root, x, a, b);
