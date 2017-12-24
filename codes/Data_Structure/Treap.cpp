@@ -5,8 +5,10 @@ class Treap{
 		const int MEM = 500000 + 5;
 		unsigned seed;
 		inline unsigned myrand(){
+			static unsigned seed = time(NULL);
 			seed = seed*seed*127 + seed*227 + 2147483587;
 			seed ^= seed*97;
+			seed /= 7123;
 			return seed;
 		}
 		struct node{

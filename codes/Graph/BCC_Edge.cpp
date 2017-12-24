@@ -1,42 +1,35 @@
-struct BccEdge {
-	static const int MXN = 100005;
-	struct Edge { int v,eid; };
-	int n,m,step,par[MXN],dfn[MXN],low[MXN];
-	vector<Edge> E[MXN];
-	DisjointSet djs;
-	void init(int _n) {
-		n = _n; m = 0;
-		for (int i=0; i<n; i++) E[i].clear();
-		djs.init(n);
-	}
-	void add_edge(int u, int v) {
-		E[u].PB({v, m});
-		E[v].PB({u, m});
-		m++;
-	}
-	void DFS(int u, int f, int f_eid) {
-		par[u] = f;
-		dfn[u] = low[u] = step++;
-		for (auto it:E[u]) {
-			if (it.eid == f_eid) continue;
-			int v = it.v;
-			if (dfn[v] == -1) {
-				DFS(v, u, it.eid);
-				low[u] = min(low[u], low[v]);
-			} else {
-				low[u] = min(low[u], dfn[v]);
+class BCC{
+	private:
+		int low[N], dfn[N], cnt;
+		bool bcc[N];
+		vector<PII> G[N];
+		void dfs(int w, int f){
+			dfn[w] = cnt++;
+			low[w] = dfn[w];
+			for(auto i: G[w]){
+				int u = i.FF, t = i.SS;
+				if(u == f) continue;
+				if(dfn[u]!=0){
+					low[w] = min(low[w], dfn[u]);
+				}else{
+					dfs(u, w);
+					low[w] = min(low[w], low[u]);
+					if(low[u] > dfn[w]) bcc[t] = true;
+				}
 			}
 		}
-	}
-	void solve() {
-		step = 0;
-		memset(dfn, -1, sizeof(int)*n);
-		for (int i=0; i<n; i++) {
-			if (dfn[i] == -1) DFS(i, i, -1);
+	public:
+		void init(int n, int m){
+			for(int i=0;i<n;i++) G[i].clear();
+			fill(bcc, bcc+m, false);
+			cnt = 0;
 		}
-		djs.init(n);
-		for (int i=0; i<n; i++) {
-			if (low[i] < dfn[i]) djs.uni(i, par[i]);
+		void add_edge(int u, int v){
+			G[u].PB({v, cnt});
+			G[v].PB({u, cnt});
+			cnt++;
 		}
-	}
-};
+		void solve(){cnt = 1;dfs(0, 0);}
+		// the id will be same as insert order, 0-base
+		bool is_bcc(int x){return bcc[x];}
+} bcc;
