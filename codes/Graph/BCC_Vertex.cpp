@@ -1,58 +1,63 @@
-struct BccVertex {
-	int n,nBcc,step,root,dfn[MXN],low[MXN];
-	vector<int> E[MXN], ap;
-	vector<pii> bcc[MXN];
-	int top;
-	pii stk[MXN];
-	void init(int _n) {
-		n = _n;
-		nBcc = step = 0;
-		for (int i=0; i<n; i++) E[i].clear();
-	}
-	void add_edge(int u, int v) {
-		E[u].PB(v);
-		E[v].PB(u);
-	}
-	void DFS(int u, int f) {
-		dfn[u] = low[u] = step++;
-		int son = 0;
-		for (auto v:E[u]) {
-			if (v == f) continue;
-			if (dfn[v] == -1) {
-				son++;
-				stk[top++] = {u,v};
-				DFS(v,u);
-				if (low[v] >= dfn[u]) {
-					if(v != root) ap.PB(v);
-					do {
-						assert(top > 0);
-						bcc[nBcc].PB(stk[--top]);
-					} while (stk[top] != pii(u,v));
-					nBcc++;
+class BCC{
+	private:
+		int n, m, cnt, bcnt;
+		vector<vector<PII>> G;
+		vector<int> low, dfn, ids, sz;
+		stack<int> stk;
+		void dfs(int w, int f){
+			dfn[w] = cnt++;
+			low[w] = dfn[w];
+			for(auto i: G[w]){
+				int u = i.FF, t = i.SS;
+				if(u == f) continue;
+				if(dfn[u] == -1){
+					stk.push(t);
+					dfs(u, w);
+					if(low[u] >= dfn[w]){
+						while(stk.top() != t){
+							assert(!stk.empty());
+							ids[stk.top()] = bcnt;
+							sz[bcnt]++;
+							stk.pop();
+						}
+						ids[stk.top()] = bcnt;
+						sz[bcnt]++;
+						stk.pop();
+						bcnt++;
+					}
+					low[w] = min(low[w], low[u]);
+				}else{
+					if(dfn[u] < dfn[w]) stk.push(t);
+					low[w] = min(low[w], dfn[u]);
 				}
-				low[u] = min(low[u], low[v]);
-			} else {
-				if (dfn[v] < dfn[u]) stk[top++] = pii(u,v);
-				low[u] = min(low[u],dfn[v]);
 			}
 		}
-		if (u == root && son > 1) ap.PB(u);
-	}
-	// return the edges of each bcc;
-	vector<vector<pii>> solve() {
-		vector<vector<pii>> res;
-		for (int i=0; i<n; i++) {
-			dfn[i] = low[i] = -1;
+	public:
+		void init(int n_, int m_){
+			n = n_, m = m_, cnt = 0;
+			G.resize(n); fill(ALL(G), vector<PII>());
+			low.resize(n);
+			dfn.resize(n); fill(ALL(dfn), -1);
+			ids.resize(m); sz.resize(m);
 		}
-		ap.clear();
-		for (int i=0; i<n; i++) {
-			if (dfn[i] == -1) {
-				top = 0;
-				root = i;
-				DFS(i,i);
+		void add_edge(int u, int v){
+			assert(0 <= u and u < n);
+			assert(0 <= v and v < n);
+			G[u].PB({v, cnt});
+			G[v].PB({u, cnt});
+			cnt++;
+		}
+		void solve(){
+			assert(cnt == m);
+			cnt = 1, bcnt = 0;
+			for(int i=0;i<n;i++){
+				if(dfn[i] != -1) continue;
+				while(!stk.empty()) stk.pop();
+				dfs(i, i);
 			}
 		}
-		REP(i,nBcc) res.PB(bcc[i]);
-		return res;
-	}
-}
+		int count(){return bcnt;}
+		// get bcc_id of edges, same as inserting order (0-base)
+		int get_id(int t){return ids[t];}
+		int get_size(int x){return sz[x];}
+} bcc;
