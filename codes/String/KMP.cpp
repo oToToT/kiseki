@@ -1,13 +1,16 @@
-int F[N];
-int match(const std::string& A, const std::string& B) {
-	F[0] = -1, F[1] = 0;
-	for (int i=1, j=0; i < B.size()-1; F[++i] = ++j) { // calculate failure function
-		if (B[i] == B[j]) F[i] = F[j]; // optimization by Knuth, may not need this
-		while (j != -1 && B[i] != B[j]) j = F[j];
+int F[N<<1];
+void KMP(char s1[], char s2[], int n, int m){
+	// make F[] for s1+'\0'+s2;
+	char ss[N<<1];
+	int len = n+m+1;
+	for(int i=0;i<n;i++) ss[i] = s1[i];
+	ss[n] = '\0';
+	for(int i=0;i<m;i++) ss[i+1+n] = s2[i];
+	F[0] = F[1] = 0;
+	for(int i=1;i<len;i++){
+		int j = F[i];
+		while(j > 0 and ss[i]!=ss[j]) j = F[j];
+		F[i+1] = (ss[i]==ss[j]?j+1:0);
 	}
-	for (int i=0, j=0; i-j+B.size() <= A.size(); i++, j++) { // match
-		while (j != -1 && A[i] != B[j]) j = F[j];
-		if (j == B.size() - 1) return i - j; // match successfully at string B's end return result
-	}
-	return -1;
+	// just find (F[len2+i] == len2), i from 1 to len+1 for matching
 }
