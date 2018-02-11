@@ -1,69 +1,46 @@
-#include <bits/stdc++.h>
-using namespace std;
-typedef long long lld;
-typedef pair<lld, lld> PLL;
-
-template<typename A, typename B>
-pair<A, B> operator-(const pair<A, B>& a, const pair<A, B>& b){
-	return {a.first-b.first, a.second-b.second};
-}
-
+template<typename T>
 class ConvexHull_2D{
-	#define x first
-	#define y second
 	private:
-		vector<PLL> dots, down, up;
-		inline lld cross(PLL a, PLL b){
-			return a.x*b.y-b.x*a.y;
-		}
+		typedef Point<T> PT;
+		vector<PT> dots;
+		struct myhash{
+			uint64_t operator()(const PT& a) const {
+				uint64_t xx, yy;
+				memcpy(&xx, &a.x, sizeof(a.x));
+				memcpy(&yy, &a.y, sizeof(a.y));
+				uint64_t ret = xx*17+yy*31;
+				ret = (ret ^ (ret >> 16))*0x9E3779B1;
+				ret = (ret ^ (ret >> 13))*0xC2B2AE35;
+				ret = ret ^ xx;
+				return (ret ^ (ret << 3)) * yy;
+			}	
+		};
+		unordered_set<PT, myhash> in_hull;
 	public:
-		void insert(PLL x){dots.push_back(x);}
+		inline void init(){in_hull.clear();dots.clear();}
+		void insert(const PT& x){dots.PB(x);}
 		void solve(){
-			down.clear();up.clear();
-			sort(dots.begin(), dots.end());
-			for(auto i: dots){
-				while(up.size()>1){
-					if(cross(i-up[up.size()-2], up.back()-up[up.size()-2]) <= 0) up.pop_back();
-					else break;
-				}
-				up.push_back(i);
+			sort(ALL(dots), [](const PT& a, const PT& b){
+				return tie(a.x, a.y) < tie(b.x, b.y);
+			});
+			vector<PT> stk(SZ(dots)<<1);
+			int top = 0;
+			for(auto p: dots){
+				while(top >= 2 and cross(p-stk[top-2], stk[top-1]-stk[top-2]) <= 0)
+					top --;
+				stk[top++] = p;
 			}
-			reverse(dots.begin(), dots.end());
-			for(auto i: dots){
-				while(down.size()>1){
-					if(cross(i-down[down.size()-2], down.back()-down[down.size()-2]) <= 0) down.pop_back();
-					else break;
-				}
-				down.push_back(i);
+			for(int i=SZ(dots)-2, t = top+1;i>=0;i--){
+				while(top >= t and cross(dots[i]-stk[top-2], stk[top-1]-stk[top-2]) <= 0)
+					top --;
+				stk[top++] = dots[i];
 			}
-			dots.clear();
-			dots.insert(dots.end(), down.begin(), down.end());
-			dots.insert(dots.end(), up.begin(), up.end());
-			sort(dots.begin(), dots.end());
-			dots.resize(distance(dots.begin(), unique(dots.begin(), dots.end())));
-			down.clear();up.clear();
+			stk.resize(top-1);
+			swap(stk, dots);
+			for(auto i: stk) in_hull.insert(i);
 		}
-		vector<PLL> get(){
-			return dots;
+		vector<PT> get(){return dots;}
+		inline bool in_it(const PT& x){
+			return in_hull.find(x)!=in_hull.end();
 		}
-		bool IsThis(PLL x){
-			auto ret = lower_bound(dots.begin(), dots.end(), x);
-			return *ret==x;
-		}
-		int count(){return dots.size();}
-	#undef x
-	#undef y
-} cv;
-
-
-int main(){
-	ios_base::sync_with_stdio(0);cin.tie(0);
-	int n; cin>>n;
-	for(int i=0;i<n;i++){
-		lld a,b;cin>>a>>b;
-		cv.insert({a, b});
-	}
-	cv.solve();
-	cout<<cv.count()<<'\n';
-	return 0;
-}
+};
