@@ -1,25 +1,31 @@
-#include <algorithm>
-using std::min;
- 
-const int N = 1<<20;
-const int LOG_N = 21;
- 
+template<typename T, typename Cmp_=std::less<T>>
 class SparseTable{
 	private:
-		int table[N][LOG_N];
+		vector<vector<T>> table;
+		vector<int> lg;
+		T cmp_(T a, T b){
+		    return Cmp_()(a, b)?a:b;
+		}
 	public:
-		void build(int n, int arr[]){
-			// [1, n]
-			for(int i=1;i<=n;i++) table[i][0] = arr[i];
-			for(int j=1;(1<<j)<=n;j++){
-				for(int i=1;i+(1<<j)-1<=n;i++){
-					table[i][j] = min(table[i][j-1], table[i+(1<<(j-1))][j-1]);
+		void init(T arr[], int n){
+			// 0-base
+			lg.resize(n+1);
+			lg[0] = -1, lg[1] = 0;
+			for(int i=2;i<=n;i++) lg[i] = lg[i>>1]+1;
+			table.resize(lg[n]+1);
+			table[0].resize(n);
+			for(int i=0;i<n;i++) table[0][i] = arr[i];
+			for(int i=1;i<=lg[n];i++){
+				int len = 1<<(i-1), sz = 1<<i;
+				table[i].resize(n-sz+1);
+				for(int j=0;j<=n-sz;j++){
+					table[i][j] = cmp_(table[i-1][j], table[i-1][j+len]);
 				}
 			}
 		}
-		int query(int l, int r){
-			// 1-base [l, r]
-			int k = 31-__builtin_clz(r-l+1);
-			return min(table[l][k], table[r-(1<<k)+1][k]);
+		T query(int l, int r){
+			// 0-base [l, r)
+			int wh = lg[r-l], len=1<<wh;
+			return cmp_(table[wh][l], table[wh][r-len]);
 		}
 };
