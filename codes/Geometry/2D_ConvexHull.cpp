@@ -5,7 +5,7 @@ class ConvexHull_2D{
 		vector<PT> dots;
 		struct myhash{
 			uint64_t operator()(const PT& a) const {
-				uint64_t xx, yy;
+				uint64_t xx=0, yy=0;
 				memcpy(&xx, &a.x, sizeof(a.x));
 				memcpy(&yy, &a.y, sizeof(a.y));
 				uint64_t ret = xx*17+yy*31;
