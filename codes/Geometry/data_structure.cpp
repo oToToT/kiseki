@@ -49,15 +49,22 @@ namespace Geometry{
 		Point operator-() const {
 			return Point(-x, -y);
 		}
-		template<class = typename is_floating_point<T>::type>
-		bool operator==(const Point& o) const {
+		bool equal(const Point& o, true_type) const {
 			return fabs(x-o.x) < EPS and fabs(y-o.y) < EPS;
 		}
-		bool operator==(const Point& o) const {
+		bool equal(const Point& o, false_type) const {
 			return x==o.x and y==o.y;
+		}
+		bool operator==(const Point& o) const {
+			return equal(o, is_floating_point<T>());
 		}
 		bool operator!=(const Point& o) const {
 			return !(*this == o);
+		}
+		bool operator<(const Point& o) const {
+			return theta() < o.theta();
+			// sort like what pairs did
+			// return fabs(x-o.x)<EPS?y<o.y:x<o.x;
 		}
 		friend inline T cross(const Point& a, const Point& b){
 			return a.x*b.y - b.x*a.y;
@@ -68,6 +75,20 @@ namespace Geometry{
 		friend ostream& operator<<(ostream& ss, const Point& o){
 			ss<<"("<<o.x<<", "<<o.y<<")";
 			return ss;
+		}
+	};
+	template<typename T>
+	struct Circle{
+		Point<T> o;
+		T r;
+		vector<Point<llf>> operator&(const Circle& aa) const {
+			llf d=o.dis(aa.o);
+			if(d > r+aa.r+EPS or d < fabs(r-aa.r)-EPS) return {};
+			llf dt = (r*r - aa.r*aa.r)/d, d1 = (d+dt)/2;
+			Point<llf> dir = (aa.o-o); dir /= d;
+			Point<llf> pcrs = dir*d1 + o;
+			dt=sqrt(max(0.0L, r*r - d1*d1)), dir=dir.rot90();
+			return {pcrs + dir*dt, pcrs - dir*dt};
 		}
 	};
 	const Point<long double> INF_P(-1e20, 1e20);
