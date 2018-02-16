@@ -47,6 +47,9 @@ struct Point{
     Point operator-() const {
         return Point(-x, -y);
     }
+    Point rot90() const {
+        return Point(-y, x);
+    }
     bool equal(const Point& o, true_type) const {
         return fabs(x-o.x) < EPS and fabs(y-o.y) < EPS;
     }
