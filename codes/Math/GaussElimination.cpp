@@ -5,46 +5,33 @@ const int N = 300;
 const llf EPS = 1e-8;
 
 // make m[i][i] = x, m[i][j] = 0
-// v is for solving equation
-bool Gauss(llf m[N][N], llf v[N], int n){
-	// right-top
+// v is for solving equation:
+// for(int i=0;i<n;i++) ans[pos[i]] = val[i]/mtx[i][pos[i]];
+// for(int i=0;i<n;i++) cout << ans[i] << '\n';
+bool Gauss(llf m[N][N], llf v[N], int n, int pos[N]){
 	for(int i=0;i<n;i++){
-		int pos = -1;
-		for(int j=i;j<n;j++){
-			if(fabsl(m[j][i]) > EPS){
-				swap(m[i], m[j]);
-				swap(v[i], v[j]);
-				pos = j;
-				break;
+		int x=-1, y=-1; llf m = 0;
+		for(int j=i;j<n;j++) for(int k=i;k<n;k++){
+			if(fabs(m[j][pos[k]])>m){
+				m = fabs(m[j][pos[k]]);
+				x = j, y = k;
 			}
 		}
-		if(pos == -1) return false;
+		if(x==-1 or y==-1) return false;
+		swap(m[x], m[i]);
+		swap(v[x], v[i]);
+		swap(pos[y], pos[i]);
 		for(int j=i+1;j<n;j++){
-			llf xi = m[j][i]/m[i][i];
-			for(int k=0;k<n;k++){
-				m[j][k] -= m[i][k]*xi;
-			}
-			v[j] -= v[i]*xi;
+			llf xi = m[j][pos[i]]/m[i][pos[i]];
+			for(int k=0;k<n;k++) m[j][pos[k]] -= xi*m[i][pos[k]];
+			v[j] -= xi*v[i];
 		}
 	}
-	// left-bottom
 	for(int i=n-1;i>=0;i--){
-		int pos = -1;
-		for(int j=i;j>=0;j--){
-			if(fabsl(m[j][i]) > EPS){
-				swap(m[i], m[j]);
-				swap(v[i], v[j]);
-				pos = j;
-				break;
-			}
-		}
-		if(pos == -1) return false;
 		for(int j=i-1;j>=0;j--){
-			llf xi = m[j][i]/m[i][i];
-			for(int k=n-1;k>=0;k--){
-				m[j][k] -= m[i][k]*xi;
-			}
-			v[j] -= v[i]*xi;
+			llf xi = m[j][pos[i]]/m[i][pos[i]];
+			for(int k=0;k<n;k++) m[j][pos[k]] -= xi*m[i][pos[k]];
+			v[j] -= xi*v[i];
 		}
 	}
 	return true;
