@@ -11,18 +11,18 @@ class SkewHeap{
 		} *root;
 		cmp CMP_;
 		size_t count;
-        SkewNode* Merge(SkewNode* a, SkewNode* b){
-            if(!a or !b) return a?a:b;
-            if(CMP_(a->x, b->x)) swap(a, b);
-            a->rc = Merge(a->rc, b);
-            swap(a->lc, a->rc);
-            return a;
-        }
-        void clear(SkewNode*& a){
-            if(!a) return;
-            clear(a->lc); clear(a->rc);
-            delete a; a = nullptr;
-        }
+		SkewNode* Merge(SkewNode* a, SkewNode* b){
+			if(!a or !b) return a?a:b;
+			if(CMP_(a->x, b->x)) swap(a, b);
+			a->rc = Merge(a->rc, b);
+			swap(a->lc, a->rc);
+			return a;
+		}
+		void clear(SkewNode*& a){
+			if(!a) return;
+			clear(a->lc); clear(a->rc);
+			delete a; a = nullptr;
+		}
 	public:
 		SkewHeap(): root(nullptr), count(0){}
 		bool empty(){return count==0;}
