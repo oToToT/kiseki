@@ -1,75 +1,61 @@
-#include <vector>
-using std::vector;
+#include <queue>
+#include <functional>
+#include <algorithm>
+using std::queue;
+using std::less;
+using std::swap;
 
-template<class __type, class __cmp=less<__type>>
-class pairingHeap{
+template<typename T, typename cmp=less<T> >
+class PairingHeap{
 	private:
-	    struct pairingNode{
-    	    __type val;
-            vector<pairingNode*> child;
-            pairingNode(){
-                val = 0;
-                child.clear();
-            }
-            pairingNode(int x): val(x){
-                child.clear();
-            }
-	    };
-		pairingNode* root;
-		int count;
-		__cmp _cp;
-		void remove(pairingNode* cur){
-		    if(cur==nullptr) return;
-		    for(auto i: cur->child) remove(i);
-		    delete cur;
+		struct PairingNode{
+			T x;
+			queue<PairingNode*> cld;
+			PairingNode(T a=0):x(a), cld(queue<PairingNode*>()){}
+		} *root;
+		cmp CMP_;
+		size_t count;
+		PairingNode* Merge(PairingNode*& a, PairingNode*& b){
+			if(!a or !b) return a?a:b;
+			if(CMP_(a->x, b->x)) swap(a, b);
+			a->cld.push(b); b=nullptr;
+			return a;
+		}
+		void clear(PairingNode*& a){
+			if(!a) return;
+			while(!(a->cld.empty())){
+				auto c = a->cld.front(); a->cld.pop();
+				clear(c);
+			}
+			delete a; a = nullptr;
 		}
 	public:
-		pairingHeap(){root=nullptr;count=0;}
-		inline bool empty(){return count==0;}
-		inline __type top(){return root->val;}
-		inline int size(){return count;}
-		inline void clear(){remove(root);root=nullptr;count=0;}
-		inline void push(__type a){
-			count++;
-			auto mynode = new pairingNode(a);
-			if(root==nullptr) root = mynode;
-			else{
-				if(_cp(root->val, mynode->val)) swap(root, mynode);
-				root->child.push_back(mynode);
-			}
+		PairingHeap(): root(nullptr), count(0){}
+		bool empty(){return count==0;}
+		size_t size(){return count;}
+		T top(){return root->x;}
+		void clear(){clear(root);count = 0;}
+		void push(const T& x){
+			PairingNode* a = new PairingNode(x);
+			count += 1;
+			root = Merge(root, a);
 		}
-		inline void pop(){
-			count--;
-			queue<pairingNode*> que;
-			for(auto i:root->child) que.push(i);
-			delete root;
-			while(que.size() > 1){
-				auto tp1=que.front();que.pop();
-				auto tp2=que.front();que.pop();
-				if(_cp(tp1->val, tp2->val)) swap(tp1, tp2);
-				tp1->child.push_back(tp2);
-				que.push(tp1);
-			}
-			if(que.empty()) root=nullptr;
-			else root = que.front();
+		void join(PairingHeap& a){
+			count += a.count; a.count = 0;
+			root = Merge(root, a.root);
 		}
-		inline void join(pairingHeap<__type, __cmp>& pq2){
-		    if(_cp(root->val, pq2.root->val)) swap(root, pq2.root);
-		    root->child.push_back(pq2.root);
-			count += pq2.count;
-		    pq2.root = nullptr;
-		    pq2.count = 0;
+		void pop(){
+			count -= 1;
+			auto& chld = root->cld;
+			while(chld.size() > 1){
+				PairingNode* a = chld.front(); chld.pop();
+				PairingNode* b = chld.front(); chld.pop();
+				chld.push(Merge(a, b));
+			}
+			PairingNode* res = chld.empty()?nullptr:chld.front();
+			delete root; root = res;
+		}
+		friend void swap(PairingHeap& a, PairingHeap& b){
+			swap(a.root, b.root);
 		}
 };
-
-int main(){
-	pairingHeap<int> pq1, pq2;
-	for(int i=0;i<1e5;i++) pq1.push(i);
-	for(int i=1e5;i<2e5;i++) pq2.push(i);
-	pq1.join(pq2);
-	while(!pq1.empty()){
-		// cout<<pq1.top()<<" ";
-		pq1.pop();
-	}
-	return 0;
-}
