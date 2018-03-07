@@ -41,7 +41,7 @@ class SkewHeap{
 		void pop(){
 			count -= 1;
 			SkewNode* rt = Merge(root->lc, root->rc);
-            delete root; root = rt;
+			delete root; root = rt;
 		}
 		friend void swap(SkewHeap& a, SkewHeap& b){
 			swap(a.root, b.root);
