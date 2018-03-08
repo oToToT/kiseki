@@ -1,70 +1,69 @@
 class BCC{
 	private:
-		int n, m, cnt, bcnt, curoot;
-		vector<vector<PII>> G;
-		vector<int> low, dfn, ids, sz;
-		vector<bool> ap;
-		stack<int> stk;
-		void dfs(int w, int f){
-			dfn[w] = cnt++;
-			low[w] = dfn[w];
-			int son = 0;
-			for(auto i: G[w]){
-				int u = i.FF, t = i.SS;
-				if(u == f) continue;
-				if(dfn[u] == -1){
-					stk.push(t);
-					dfs(u, w);
-					if(low[u] >= dfn[w]){
-						if(u != curoot) ap[u] = true;
-						while(stk.top() != t){
-							assert(!stk.empty());
-							ids[stk.top()] = bcnt;
-							sz[bcnt]++;
-							stk.pop();
-						}
-						ids[stk.top()] = bcnt;
-						sz[bcnt]++;
-						stk.pop();
-						bcnt++;
-					}
-					low[w] = min(low[w], low[u]);
+		vector<vector<pair<int,int>>> G;
+		vector<int> dfn, low, id, sz;
+		vector<bool> vis, ap;
+		int n, ecnt, bcnt;
+		void tarjan(int u, int f, int d){
+			vis[u] = true;
+			dfn[u] = low[u] = d;
+			int child = 0;
+			for(auto e: G[u]) if(e.first != f){
+				int v = e.first;
+				if(vis[v]){
+					low[u] = min(low[u], dfn[v]);
 				}else{
-					if(dfn[u] < dfn[w]) stk.push(t);
-					low[w] = min(low[w], dfn[u]);
+					tarjan(v, u, d+1);
+					if(low[v] >= dfn[u]) ap[u] = true;
+					low[u] = min(low[u], low[v]);
+					child += 1;
 				}
 			}
-			if (w == curoot && son > 1) ap[w] = true;
+			if(dfn[u]==0 and child <= 1) ap[u] = false;
+		}
+		void bfs_bcc(int x){
+			queue<int> bfs;
+			bfs.push(x); vis[x] = true;
+			while(!bfs.empty()){
+				int u = bfs.front(); bfs.pop();
+				for(auto e: G[u]){
+					id[e.second] = bcnt;
+					if(ap[e.first] or vis[e.first]) continue;
+					bfs.push(e.first); vis[e.first] = true;
+					sz[bcnt] += 1;
+				}
+			}
 		}
 	public:
-		void init(int n_, int m_){
-			n = n_, m = m_, cnt = 0;
-			G.resize(n); fill(ALL(G), vector<PII>());
-			low.resize(n);
-			dfn.resize(n); fill(ALL(dfn), -1);
-			ids.resize(m); sz.resize(m);
-			ap.resize(n); fill(ALL(ap), false);
+		void init(int n_){
+			n = n_; G.clear(); G.resize(n);
+			dfn.resize(n); low.resize(n);
+			vis.clear(); vis.resize(n);
+			ap.clear(); ap.resize(n);
+			ecnt = 0, bcnt = 0;
 		}
 		void add_edge(int u, int v){
 			assert(0 <= u and u < n);
 			assert(0 <= v and v < n);
-			G[u].PB({v, cnt});
-			G[v].PB({u, cnt});
-			cnt++;
+			G[u].emplace_back(v, ecnt);
+			G[v].emplace_back(u, ecnt);
+			ecnt += 1;
 		}
 		void solve(){
-			assert(cnt == m);
-			cnt = 1, bcnt = 0;
-			for(int i=0;i<n;i++){
-				if(dfn[i] != -1) continue;
-				while(!stk.empty()) stk.pop();
-				curoot = i;
-				dfs(i, i);
+			for(int i=0;i<n;i++) if(!vis[i]) {
+				tarjan(i, i, 0);
+			}
+			id.resize(ecnt);
+			vis.clear(); vis.resize(n);
+			sz.clear(); sz.resize(n);
+			for(int i=0;i<n;i++) if(ap[i]){
+				bfs_bcc(i); bcnt += 1;
 			}
 		}
-		int count(){return bcnt;}
-		// get bcc_id of edges, same as inserting order (0-base)
-		int get_id(int t){return ids[t];}
-		int get_size(int x){return sz[x];}
 		bool isAP(int x){return ap[x];}
+		int count(){return bcnt;}
+		// bcc_id of edges by insert order (0-base)
+		int get_id(int x){return id[x];}
+		// bcc size by bcc_id
+		int get_size(int x){return sz[x];}
 } bcc;
