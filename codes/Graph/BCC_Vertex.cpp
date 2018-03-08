@@ -22,6 +22,7 @@ class BCC{
 			if(dfn[u]==0 and child <= 1) ap[u] = false;
 		}
 		void bfs_bcc(int x){
+			// not sure
 			queue<int> bfs;
 			bfs.push(x); vis[x] = true;
 			while(!bfs.empty()){
