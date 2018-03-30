@@ -1,3 +1,10 @@
+/*
+extended euler:
+a^b mod p
+if gcd(a, p)==1: a^(b%phi(p))
+elif b < phi(p): a^b mod p
+else a^(b%phi(p) + phi(p))
+*/
 inline int64_t Euler(int x){
 	int64_t r=1;
 	for(int i=2;i*i<=x;++i){
