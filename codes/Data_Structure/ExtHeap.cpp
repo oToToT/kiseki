@@ -11,16 +11,16 @@ using __gnu_pbds::rc_binomial_heap_tag;
 using __gnu_pbds::thin_heap_tag;
 
 int main(){
-	priority_queue<int,less<int>,pairing_heap_tag> pq1, pq2;
-	pq1.push(1);
-	pq2.push(2);
-	pq1.join(pq2);
-	assert(pq2.size()==0);
-	auto it = pq1.push(87);
-	pq1.modify(it, 19);
-	while(!pq1.empty()){
-		pq1.top();
-		pq1.pop();
-	}
-	return 0;
+    priority_queue<int,less<int>,pairing_heap_tag> pq1, pq2;
+    pq1.push(1);
+    pq2.push(2);
+    pq1.join(pq2);
+    assert(pq2.size()==0);
+    auto it = pq1.push(87);
+    pq1.modify(it, 19);
+    while(!pq1.empty()){
+        pq1.top();
+        pq1.pop();
+    }
+    return 0;
 }

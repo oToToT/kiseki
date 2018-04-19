@@ -6,7 +6,7 @@ struct Point{
     Point(): x(0), y(0){}
     Point(T _, T __): x(_), y(__){}
     template<typename T2>
-    Point(const Point<T2>& a): x(a.x), y(a.y){}
+      Point(const Point<T2>& a): x(a.x), y(a.y){}
     inline llf theta() const {
         return atan2((llf)y, (llf)x);
     }

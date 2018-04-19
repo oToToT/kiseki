@@ -17,10 +17,10 @@ struct PRNG {
     S operator()(S l, S r) { return next(l, r); }
     static T gen(T s) { return PRNG(s)(); }
     template<class U>
-    void shuffle(U first, U last) {
-        size_t n = last - first;
-        for (size_t i = 0; i < n; i++) swap(first[i], first[next(i + 1)]);
-    }
+      void shuffle(U first, U last) {
+          size_t n = last - first;
+          for (size_t i = 0; i < n; i++) swap(first[i], first[next(i + 1)]);
+      }
 };
 
 using R32 = PRNG<uint32_t, 0x9E3779B1, 0x85EBCA6B, 0xC2B2AE35, 16, 13, 16>;

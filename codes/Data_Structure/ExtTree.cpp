@@ -16,12 +16,12 @@ template<typename A, B>
 using ordered_map = tree<A, B, less<A>, rb_tree_tag, tree_order_statistics_node_update>;
 
 int main(){
-	ordered_set<int> ss;
-	ordered_map<int,int> mm;
-	ss.insert(1);
-	ss.insert(5);
-	assert(*ss.find_by_order(0)==1);
-	assert(ss.order_of_key(-1)==0);
-	assert(ss.order_of_key(87)==2);
-	return 0;
+    ordered_set<int> ss;
+    ordered_map<int,int> mm;
+    ss.insert(1);
+    ss.insert(5);
+    assert(*ss.find_by_order(0)==1);
+    assert(ss.order_of_key(-1)==0);
+    assert(ss.order_of_key(87)==2);
+    return 0;
 }

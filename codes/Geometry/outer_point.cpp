@@ -1,6 +1,5 @@
 template<typename T>
 Circle<llf> get_circum(const Point<T>& a, const Point<T>& b, const Point<T>& c){
-    
     llf a1 = a.x-b.x;
     llf b1 = a.y-b.y;
     llf c1 = (a.x+b.x)/2 * a1 + (a.y+b.y)/2 * b1;

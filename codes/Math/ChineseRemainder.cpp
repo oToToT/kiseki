@@ -1,8 +1,8 @@
 // ax+ny = 1, ax+ny == ax == 1 (mod n)
 pair<lld,lld> gcd(lld a, lld b){
-	if(b == 0) return {1, 0};
-	pair<lld,lld> q = gcd(b, a % b);
-	return {q.second, q.first - q.second * (a / b)};
+    if(b == 0) return {1, 0};
+    pair<lld,lld> q = gcd(b, a % b);
+    return {q.second, q.first - q.second * (a / b)};
 }
 
 lld crt(lld ans[], lld pri[], int n){

@@ -10,7 +10,7 @@ struct Line{
         assert(fabs(a)>EPS or fabs(b)>EPS);
     }
     template<typename T2>
-    Line(const Line<T2>& x): a(x.a), b(x.b), c(x.c){}
+      Line(const Line<T2>& x): a(x.a), b(x.b), c(x.c){}
     typedef Point<long double> Pt;
     bool equal(const Line& o, true_type) const {
         return fabs(a-o.a) < EPS and fabs(b-o.b) < EPS and fabs(c-o.b) < EPS;
