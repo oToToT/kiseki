@@ -1,169 +1,142 @@
-struct Bigint{
-    static const int LEN = 60;
-    static const int BIGMOD = 10000;
-
-    int s;
-    int vl, v[LEN];
-    Bigint() : s(1) { vl = 0; }
-    Bigint(long long a) {
-        s = 1; vl = 0;
-        if (a < 0) { s = -1; a = -a; }
-        while (a) {
-            push_back(a % BIGMOD);
-            a /= BIGMOD;
-        }
-    }
-    Bigint(string str) {
-        s = 1; vl = 0;
-        int stPos = 0, num = 0;
-        if (!str.empty() && str[0] == '-') {
-            stPos = 1;
-            s = -1;
-        }
-        for (int i=SZ(str)-1, q=1; i>=stPos; i--) {
-            num += (str[i] - '0') * q;
-            if ((q *= 10) >= BIGMOD) {
-                push_back(num);
-                num = 0; q = 1;
-            }
-        }
-        if (num) push_back(num);
-        n();
-    }
-
-    int len() const {
-        return vl;
-    }
-    bool empty() const { return len() == 0; }
-    void push_back(int x) {
-        v[vl++] = x;
-    }
-    void pop_back() {
-        vl--;
-    }
-    int back() const {
-        return v[vl-1];
-    }
-    void n() {
-        while (!empty() && !back()) pop_back();
-    }
-    void resize(int nl) {
-        vl = nl;
-        fill(v, v+vl, 0);
-    }
-
-    void print() const {
-        if (empty()) { putchar('0'); return; }
-        if (s == -1) putchar('-');
-        printf("%d", back());
-        for (int i=len()-2; i>=0; i--) printf("%.4d",v[i]);
-    }
-    friend std::ostream& operator << (std::ostream& out, const Bigint &a) {
-        if (a.empty()) { out << "0"; return out; } 
-        if (a.s == -1) out << "-";
-        out << a.back();
-        for (int i=a.len()-2; i>=0; i--) {
-            char str[10];
-            snprintf(str, 5, "%.4d", a.v[i]);
-            out << str;
-        }
-        return out;
-    }
-
-    int cp3(const Bigint &b)const {
-        if (s != b.s) return s - b.s;
-        if (s == -1) return -(-*this).cp3(-b);
-        if (len() != b.len()) return len()-b.len();//int
-        for (int i=len()-1; i>=0; i--)
-            if (v[i]!=b.v[i]) return v[i]-b.v[i];
-        return 0;
-    }
-
-    bool operator < (const Bigint &b)const{ return cp3(b)<0; }
-    bool operator <= (const Bigint &b)const{ return cp3(b)<=0; }
-    bool operator == (const Bigint &b)const{ return cp3(b)==0; }
-    bool operator != (const Bigint &b)const{ return cp3(b)!=0; }
-    bool operator > (const Bigint &b)const{ return cp3(b)>0; }
-    bool operator >= (const Bigint &b)const{ return cp3(b)>=0; }
-
-    Bigint operator - () const {
-        Bigint r = (*this);
-        r.s = -r.s;
-        return r;
-    }
-    Bigint operator + (const Bigint &b) const {
-        if (s == -1) return -(-(*this)+(-b));
-        if (b.s == -1) return (*this)-(-b);
-        Bigint r;
-        int nl = max(len(), b.len());
-        r.resize(nl + 1);
-        for (int i=0; i<nl; i++) {
-            if (i < len()) r.v[i] += v[i];
-            if (i < b.len()) r.v[i] += b.v[i];
-            if(r.v[i] >= BIGMOD) {
-                r.v[i+1] += r.v[i] / BIGMOD;
-                r.v[i] %= BIGMOD;
-            }
-        }
-        r.n();
-        return r;
-    }
-    Bigint operator - (const Bigint &b) const {
-        if (s == -1) return -(-(*this)-(-b));
-        if (b.s == -1) return (*this)+(-b);
-        if ((*this) < b) return -(b-(*this));
-        Bigint r;
-        r.resize(len());
-        for (int i=0; i<len(); i++) {
-            r.v[i] += v[i];
-            if (i < b.len()) r.v[i] -= b.v[i];
-            if (r.v[i] < 0) {
-                r.v[i] += BIGMOD;
-                r.v[i+1]--;
-            }
-        }
-        r.n();
-        return r;
-    }
-    Bigint operator * (const Bigint &b) {
-        Bigint r;
-        r.resize(len() + b.len() + 1);
-        r.s = s * b.s;
-        for (int i=0; i<len(); i++) {
-            for (int j=0; j<b.len(); j++) {
-                r.v[i+j] += v[i] * b.v[j];
-                if(r.v[i+j] >= BIGMOD) {
-                    r.v[i+j+1] += r.v[i+j] / BIGMOD;
-                    r.v[i+j] %= BIGMOD;
-                }
-            }
-        }
-        r.n();
-        return r;
-    }
-    Bigint operator / (const Bigint &b) {
-        Bigint r;
-        r.resize(max(1, len()-b.len()+1));
-        int oriS = s;
-        Bigint b2 = b; // b2 = abs(b)
-        s = b2.s = r.s = 1;
-        for (int i=r.len()-1; i>=0; i--) {
-            int d=0, u=BIGMOD-1;
-            while(d<u) {
-                int m = (d+u+1)>>1;
-                r.v[i] = m;
-                if((r*b2) > (*this)) u = m-1;
-                else d = m;
-            }
-            r.v[i] = d;
-        }
-        s = oriS;
-        r.s = s * b.s;
-        r.n();
-        return r;
-    }
-    Bigint operator % (const Bigint &b) {
-        return (*this)-(*this)/b*b;
-    }
+class BigInt{
+	public:
+		typedef int_fast64_t lld;
+		#define PRINTF_ARG PRIdFAST64
+		#define LOG_BASE_STR "9"
+		static constexpr lld BASE = 1000000000;
+		static constexpr int LOG_BASE = 9;
+		vector<lld> dig;
+		bool neg;
+		inline int len()const{return (int)dig.size();}
+		inline int cmp_minus(const BigInt& a) const {
+			if(neg ^ a.neg) return (int)a.neg*2 - 1;
+			if(len() != a.len()) return len() - a.len();
+			for(int i=len()-1;i>=0;i--) if(dig[i] != a.dig[i]) {
+				return dig[i] - a.dig[i];
+			}
+			return 0;
+		}
+		inline void trim(){
+			while(!dig.empty() and dig.back()==0) dig.pop_back();
+			if(dig.empty()) neg = false;
+		}
+	public:
+		BigInt(): dig(vector<lld>()), neg(false){}
+		BigInt(lld a): dig(vector<lld>(1, a)), neg(false){trim();}
+		BigInt(const string& a): dig(vector<lld>()){
+			assert(!a.empty()); neg = (a[0]=='-');
+			for(int i=((int)(a.size()))-1;i>=neg;i-=LOG_BASE){
+				lld cur = 0;
+				for(int j=min(LOG_BASE-1, i-neg);j>=0;j--) cur = cur*10+a[i-j]-'0';
+				dig.push_back(cur);
+			}
+		}
+		inline bool operator<(const BigInt& a)const{return cmp_minus(a)<0;}
+		inline bool operator<=(const BigInt& a)const{return cmp_minus(a)<=0;}
+		inline bool operator==(const BigInt& a)const{return cmp_minus(a)==0;}
+		inline bool operator!=(const BigInt& a)const{return cmp_minus(a)!=0;}
+		inline bool operator>(const BigInt& a)const{return cmp_minus(a)>0;}
+		inline bool operator>=(const BigInt& a)const{return cmp_minus(a)>=0;}
+		BigInt operator-() const {
+			BigInt ret = *this;
+			ret.neg ^= 1;
+			return ret;
+		}
+		BigInt operator+(const BigInt& a) const {
+			if(neg) return -(-(*this)+(-a));
+			if(a.neg) return (*this)-(-a);
+			int n = max(a.len(), len());
+			BigInt ret; ret.dig.resize(n);
+			lld pro = 0;
+			for(int i=0;i<n;i++) {
+				ret.dig[i] = pro;
+				if(i < a.len()) ret.dig[i] += a.dig[i];
+				if(i < len()) ret.dig[i] += dig[i];
+				pro = 0;
+				if(ret.dig[i] >= BASE) pro = ret.dig[i]/BASE;
+				ret.dig[i] -= BASE*pro;
+			}
+			if(pro != 0) ret.dig.push_back(pro);
+			return ret;
+		}
+		BigInt operator-(const BigInt& a) const {
+			if(neg) return -(-(*this) - (-a));
+			if(a.neg) return (*this) + (-a);
+			int diff = cmp_minus(a);
+			if(diff < 0) return -(a - (*this));
+			if(diff == 0) return 0;
+			BigInt ret; ret.dig.resize(len(), 0);
+			for(int i=0;i<len();i++) {
+				ret.dig[i] += dig[i];
+				if(i < a.len()) ret.dig[i] -= a.dig[i];
+				if(ret.dig[i] < 0){
+					ret.dig[i] += BASE;
+					ret.dig[i+1]--;
+				}
+			}
+			ret.trim();
+			return ret;
+		}
+		BigInt operator*(const BigInt& a) const {
+			if(len()==0 or a.len()==0) return 0;
+			BigInt ret; ret.dig.resize(len()+a.len()+1);
+			ret.neg = neg ^ a.neg;
+			for(int i=0;i<len();i++) for(int j=0;j<a.len();j++){
+				ret.dig[i+j] += dig[i] * a.dig[j];
+				if(ret.dig[i+j] >= BASE) {
+					lld x = ret.dig[i+j] / BASE;
+					ret.dig[i+j+1] += x;
+					ret.dig[i+j] -= x * BASE;
+				}
+			}
+			ret.trim();
+			return ret;
+		}
+		BigInt operator/(const BigInt& a) const {
+			assert(a.len());
+			if(len() < a.len()) return 0;
+			BigInt ret; ret.dig.resize(len()-a.len()+1);
+			ret.neg = a.neg;
+			for(int i=len()-a.len();i>=0;i--){
+				lld l = 0, r = BASE;
+				while(r-l > 1){
+					lld mid = (l+r)>>1;
+					ret.dig[i] = mid;
+					if(ret*a <= (neg?-(*this):(*this))) l = mid;
+					else r = mid;
+				}
+				ret.dig[i] = l;
+			}
+			ret.neg ^= neg; ret.trim();
+			return ret;
+		}
+		BigInt operator%(const BigInt& a) const {
+			return (*this) - (*this) / a * a;
+		}
+		friend BigInt abs(BigInt a){
+			a.neg ^= 1; return a;
+		}
+		friend void swap(BigInt& a, BigInt& b){
+			swap(a.dig, b.dig); swap(a.neg, b.neg);
+		}
+		friend istream& operator>>(istream& ss, BigInt& a){
+			string s; ss >> s;
+			a = s;
+			return ss;
+		}
+		friend ostream& operator<<(ostream& ss, const BigInt& a){
+			if(a.len() == 0) return ss << '0';
+			if(a.neg) ss << '-';
+			ss << a.dig.back();
+			for(int i=a.len()-2;i>=0;i--) ss << setw(LOG_BASE) << setfill('0') << a.dig[i];
+			return ss;
+		}
+		inline void print() const {
+			if(len() == 0){putchar('0');return;}
+			if(neg) putchar('-');
+			printf("%" PRINTF_ARG, dig.back());
+			for(int i=len()-2;i>=0;i--) printf("%0" LOG_BASE_STR PRINTF_ARG, dig[i]);
+		}
+		#undef PRINTF_ARG
+		#undef LOG_BASE_STR
 };
-
