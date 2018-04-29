@@ -9,10 +9,11 @@ class BigInt{
 		bool neg;
 		inline int len()const{return (int)dig.size();}
 		inline int cmp_minus(const BigInt& a) const {
+			if(len() == 0 and a.len() == 0) return 0;
 			if(neg ^ a.neg) return (int)a.neg*2 - 1;
-			if(len() != a.len()) return len() - a.len();
+			if(len() != a.len()) return neg?a.len()-len():len()-a.len();
 			for(int i=len()-1;i>=0;i--) if(dig[i] != a.dig[i]) {
-				return dig[i] - a.dig[i];
+				return neg?a.dig[i]-dig[i]:dig[i]-a.dig[i];
 			}
 			return 0;
 		}
@@ -22,14 +23,17 @@ class BigInt{
 		}
 	public:
 		BigInt(): dig(vector<lld>()), neg(false){}
-		BigInt(lld a): dig(vector<lld>(1, a)), neg(false){trim();}
+		BigInt(lld a): dig(vector<lld>()){
+			neg = a<0; dig.push_back(abs(a));
+			trim();
+		}
 		BigInt(const string& a): dig(vector<lld>()){
 			assert(!a.empty()); neg = (a[0]=='-');
 			for(int i=((int)(a.size()))-1;i>=neg;i-=LOG_BASE){
 				lld cur = 0;
 				for(int j=min(LOG_BASE-1, i-neg);j>=0;j--) cur = cur*10+a[i-j]-'0';
 				dig.push_back(cur);
-			}
+			} trim();
 		}
 		inline bool operator<(const BigInt& a)const{return cmp_minus(a)<0;}
 		inline bool operator<=(const BigInt& a)const{return cmp_minus(a)<=0;}
