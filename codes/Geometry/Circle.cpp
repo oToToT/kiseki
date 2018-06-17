@@ -1,5 +1,6 @@
 template<typename T>
 struct Circle{
+    static constexpr llf EPS = 1e-8;
     Point<T> o;
     T r;
     vector<Point<llf>> operator&(const Circle& aa) const {

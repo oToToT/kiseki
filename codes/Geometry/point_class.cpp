@@ -50,6 +50,11 @@ struct Point{
     Point rot90() const {
         return Point(-y, x);
     }
+    template<typename T2>
+    bool in(const Circle<T2>& a) const {
+        /* Add struct Circle at top */
+    	return a.o.dis(*this)+EPS <= a.r;
+    }
     bool equal(const Point& o, true_type) const {
         return fabs(x-o.x) < EPS and fabs(y-o.y) < EPS;
     }
