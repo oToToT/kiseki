@@ -71,7 +71,7 @@ struct Point{
         return theta() < o.theta();
         // sort like what pairs did
         // if(is_floating_point<T>()) return fabs(x-o.x)<EPS?y<o.y:x<o.x;
-        // else tie(x, y) < tie(o.x, o.y);
+        // else return tie(x, y) < tie(o.x, o.y);
     }
     friend inline T cross(const Point& a, const Point& b){
         return a.x*b.y - b.x*a.y;
