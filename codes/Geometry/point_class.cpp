@@ -59,7 +59,7 @@ struct Point{
         return fabs(x-o.x) < EPS and fabs(y-o.y) < EPS;
     }
     bool equal(const Point& o, false_type) const {
-        return x==o.x and y==o.y;
+        return tie(x, y) == tie(o.x, o.y);
     }
     bool operator==(const Point& o) const {
         return equal(o, is_floating_point<T>());
@@ -70,7 +70,8 @@ struct Point{
     bool operator<(const Point& o) const {
         return theta() < o.theta();
         // sort like what pairs did
-        // return fabs(x-o.x)<EPS?y<o.y:x<o.x;
+        // if(is_floating_point<T>()) return fabs(x-o.x)<EPS?y<o.y:x<o.x;
+        // else tie(x, y) < tie(o.x, o.y);
     }
     friend inline T cross(const Point& a, const Point& b){
         return a.x*b.y - b.x*a.y;
