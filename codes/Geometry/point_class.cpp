@@ -3,8 +3,7 @@ struct Point{
     typedef long double llf;
     static constexpr llf EPS = 1e-8;
     T x, y;
-    Point(): x(0), y(0){}
-    Point(T _, T __): x(_), y(__){}
+    Point(T _=0, T __=0): x(_), y(__){}
     template<typename T2>
       Point(const Point<T2>& a): x(a.x), y(a.y){}
     inline llf theta() const {
