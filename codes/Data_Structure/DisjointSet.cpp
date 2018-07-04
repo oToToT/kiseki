@@ -28,8 +28,8 @@ public:
         int ls = sv.back(); sv.pop_back();
         while((int)opt.size() > ls){
             pair<int*, int> cur=opt.back();
-            cur->first = cur.second;
+            *cur.first = cur.second;
             opt.pop_back();
         }
     }
-}
+};
