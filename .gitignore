@@ -4,6 +4,7 @@
 *.toc
 *.fls
 *.fdb_latexmk
+*.synctex.gz
 
 // Maciontish
 ._codebook.pdf
