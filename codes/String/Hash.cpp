@@ -1,21 +1,21 @@
-#include <string>
-typedef long long lld;
 const int N = 1000000;
 class Hash{
 private:
-    const lld p = 127, q = 1208220623;
-    int sz;
-    lld prefix[N], power[N];
+    const int p = 127, q = 1208220623;
+    int sz, prefix[N], power[N];
+    inline int add(int x, int y){return x+y>=q?x+y-q:x+y;}
+    inline int sub(int x, int y){return x-y<0?x-y+q:x-y;}
+    inline int mul(int x, int y){return 1LL*x*y%q;}
 public:
     void init(const std::string &x){
         sz = x.size();
         prefix[0]=0;
-        for(int i=1;i<=sz;i++) prefix[i]=((prefix[i-1]*p)%q+x[i-1])%q;
+        for(int i=1;i<=sz;i++) prefix[i]=add(mul(prefix[i-1], p), x[i-1]);
         power[0]=1;
-        for(int i=1;i<=sz;i++) power[i]=(power[i-1]*p)%q;
+        for(int i=1;i<=sz;i++) power[i]=mul(power[i-1], p);
     }
-    lld query(int l, int r){
+    int query(int l, int r){
         // 1-base (l, r]
-        return (prefix[r] - (prefix[l]*power[r-l])%q + q)%q;
+        return sub(prefix[r], mul(prefix[l], power[r-l]));
     }
 };
