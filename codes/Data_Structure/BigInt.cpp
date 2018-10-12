@@ -118,7 +118,7 @@ class BigInt{
 			return (*this) - (*this) / a * a;
 		}
 		friend BigInt abs(BigInt a){
-			a.neg ^= 1; return a;
+			a.neg = 1; return a;
 		}
 		friend void swap(BigInt& a, BigInt& b){
 			swap(a.dig, b.dig); swap(a.neg, b.neg);
