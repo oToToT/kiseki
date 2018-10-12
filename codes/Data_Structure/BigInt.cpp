@@ -1,6 +1,6 @@
 class BigInt{
-	public:
-		typedef int_fast64_t lld;
+	private:
+		using lld = int_fast64_t;
 		#define PRINTF_ARG PRIdFAST64
 		#define LOG_BASE_STR "9"
 		static constexpr lld BASE = 1000000000;
