@@ -29,6 +29,7 @@ public:
         cnt = 0;
     }
     void add_edge(int u, int v){
+        // should check for multiple edge
         G[u].PB({v, cnt});
         G[v].PB({u, cnt});
         cnt++;
