@@ -1,8 +1,9 @@
 class BCC{
 private:
-    int low[N], dfn[N], cnt;
-    bool bcc[N];
-    vector<PII> G[N];
+    vector<int> low, dfn;
+    int cnt;
+    vector<bool> bcc;
+    vector<vector<PII>> G;
     void dfs(int w, int f){
         dfn[w] = cnt++;
         low[w] = dfn[w];
@@ -20,8 +21,11 @@ private:
     }
 public:
     void init(int n, int m){
-        for(int i=0;i<n;i++) G[i].clear();
-        fill(bcc, bcc+m, false);
+        G.resize(n);
+        fill(G.begin(), G.end(), vector<PII>());
+        bcc.clear(); bcc.resize(m);
+        low.clear(); low.resize(n);
+        dfn.clear(); dfn.resize(n);
         cnt = 0;
     }
     void add_edge(int u, int v){

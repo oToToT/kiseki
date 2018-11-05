@@ -1,12 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef int64_t lld;
-typedef uint64_t llu;
-typedef long double llf;
-typedef pair<int,int> PII;
-typedef pair<int,lld> PIL;
-typedef pair<lld,int> PLI;
-typedef pair<lld,lld> PLL;
+using lld = int64_t;
+using llu = uint64_t;
+using llf = long double;
+using PII = pair<int,int>;
+using PIL = pair<int,lld>;
+using PLI = pair<lld,int>;
+using PLL = pair<lld,lld>;
 template<typename T>
 using maxHeap = priority_queue<T,vector<T>,less<T>>;
 template<typename T>
