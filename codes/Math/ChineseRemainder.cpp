@@ -24,4 +24,5 @@ g = gcd(m1, m2)
 assert((a1-a2)%g==0)
 [p, q] = exgcd(m2/g, m1/g)
 return a2+m2*(p*(a1-a2)/g)
+0 <= x < lcm(m1, m2)
 */

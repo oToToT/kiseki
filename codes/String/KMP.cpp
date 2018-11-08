@@ -14,3 +14,5 @@ void KMP(char s1[], char s2[], int n, int m){
     }
     // just find (F[len2+i] == len2), i from 1 to len+1 for matching
 }
+// [0, i]是個循環字串，且循環節為i-f[i]：
+// if(f[i]>0 and i%(i-f[i])==0) cout << i << " " << i/(i-f[i]) << '\n';
