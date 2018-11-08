@@ -1,7 +1,8 @@
 class SCC{
 private:
     int n, num_;
-    vector<int> G[N], rG[N], ord, num;
+    vector<vector<int>> G, rG;
+    vector<int> ord, num;
     bool vis[N];
     void dfs(int u){
         if(vis[u]) return;
@@ -17,6 +18,7 @@ private:
     }
 public:
     inline void init(int n_){
+        G.resize(n); rG.resize(n);
         n=n_, num_=0;
         num.resize(n);
         for(int i=0;i<n;i++) G[i].clear();

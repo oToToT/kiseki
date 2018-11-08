@@ -1,5 +1,5 @@
 // ax+ny = 1, ax+ny == ax == 1 (mod n)
-pair<lld,lld> gcd(lld a, lld b){
+pair<lld,lld> exgcd(lld a, lld b){
     if(b == 0) return {1, 0};
     pair<lld,lld> q = gcd(b, a % b);
     return {q.second, q.first - q.second * (a / b)};
@@ -16,3 +16,12 @@ lld crt(lld ans[], lld pri[], int n){
     }
     return ret;
 }
+/*
+Another:
+x = a1 % m1
+x = a2 % m2
+g = gcd(m1, m2)
+assert((a1-a2)%g==0)
+[p, q] = exgcd(m2/g, m1/g)
+return a2+m2*(p*(a1-a2)/g)
+*/
