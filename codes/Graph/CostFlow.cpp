@@ -1,10 +1,10 @@
 class MiniCostMaxiFlow{
-    typedef int CapT;
-    typedef lld WeiT;
-    typedef pair<CapT, WeiT> PCW;
-    const CapT INF_CAP = 1<<30;
-    const WeiT INF_WEI = 1LL<<60;
-    const int MAXV = N;
+    using CapT = int;
+    using WeiT = lld;
+    using PCW = pair<CapT, WeiT>;
+    static const CapT INF_CAP = 1<<30;
+    static const WeiT INF_WEI = 1LL<<60;
+    static const int MAXV = N;
 private:
     struct Edge{
         int to, back;
