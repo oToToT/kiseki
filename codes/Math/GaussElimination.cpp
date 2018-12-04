@@ -8,10 +8,10 @@ const llf EPS = 1e-8;
 // for(int i=0;i<n;i++) cout << ans[i] << '\n';
 bool Gauss(llf m[N][N], llf v[N], int n, int pos[N]){
     for(int i=0;i<n;i++){
-        int x=-1, y=-1; llf m = 0;
+        int x=-1, y=-1; llf e = 0;
         for(int j=i;j<n;j++) for(int k=i;k<n;k++){
-            if(fabs(m[j][pos[k]])>m){
-                m = fabs(m[j][pos[k]]);
+            if(fabs(m[j][pos[k]])>e){
+                e = fabs(m[j][pos[k]]);
                 x = j, y = k;
             }
         }
