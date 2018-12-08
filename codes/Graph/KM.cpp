@@ -1,17 +1,15 @@
 struct KM{
 // Maximum Bipartite Weighted Matching (Perfect Match)
 	static const int MXN = 650;
-	static const int INF = 2147483647; // LL
+	static const lld INF = 2147483647;
 	int n,match[MXN],vx[MXN],vy[MXN];
-	int edge[MXN][MXN],lx[MXN],ly[MXN],slack[MXN];
-	// ^^^^ LL
+	lld edge[MXN][MXN],lx[MXN],ly[MXN],slack[MXN];
 	void init(int _n){
 		n = _n;
 		for(int i=0; i<n; i++) for(int j=0; j<n; j++)
 			edge[i][j] = 0;
 	}
-	void addEdge(int x, int y, int w) // LL
-  { edge[x][y] = w; }
+	void addEdge(int x, int y, lld w) { edge[x][y] = w; }
 	bool DFS(int x){
 		vx[x] = 1;
 		for (int y=0; y<n; y++){
@@ -21,7 +19,7 @@ struct KM{
 			} else {
 				vy[y] = 1;
 				if (match[y] == -1 || DFS(match[y]))
-        { match[y] = x; return true; }
+        		{ match[y] = x; return true; }
 			}
 		}
 		return false;
@@ -37,7 +35,7 @@ struct KM{
 			while (true){
 				fill(vx,vx+n,0); fill(vy,vy+n,0);
 				if ( DFS(i) ) break;
-				int d = INF; // long long
+				lld d = INF; // long long
 				for (int j=0; j<n; j++)
 					if (!vy[j]) d = min(d, slack[j]);
 				for (int j=0; j<n; j++){
@@ -47,7 +45,7 @@ struct KM{
 				}
 			}
 		}
-		int res=0;
+		lld res=0;
 		for (int i=0; i<n; i++)
 			res += edge[match[i]][i];
 		return res;

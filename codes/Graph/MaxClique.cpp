@@ -1,75 +1,43 @@
-// Incorrect and Contain Lots of Bug...
-class MaxClique{
-private:
-    typedef bitset<N> bits;
-    bool poped[N];
-    bits G[N], ans;
-    int deg[N], deo[N], n;
-    void sort_by_degree(){
-        memset(poped, 0, sizeof(poped));
-        for(int i=0;i<n;i++) deg[i]=G[i].count();
-        for(int i=0;i<n;i++){
-            int mi = N, id = -1;
-            for(int j=0;j<n;j++){
-                if(poped[j]) continue;
-                if(deg[j] < mi){
-                    mi = deg[j];
-                    id = j;
-                }
-            }
-            deo[i] = id;
-            // DUMP(deo[i]);
-            poped[id] = 1;
-            for(int u=G[i]._Find_first();u<n;u=G[i]._Find_next(u)){
-                deg[u]--;
-            }
-        }
-        for(int i=0;i<n;i++) deg[i]=G[i].count();
+struct MaxClique {
+    int n, deg[maxn], ans;
+    bitset<maxn> adj[maxn];
+    vector<pair<int, int>> edge;
+    void init(int _n) {
+        n = _n;
+        for (int i = 0; i < n; ++i) adj[i].reset();
+        for (int i = 0; i < n; ++i) deg[i] = 0;
+        edge.clear();
     }
-    void BronKerbosch(bits R, bits P, bits X){
-        // DEBUG("R: ", R, ", P: ", P, ", X: ", X, '\n');
-        if(P.count()==0 and X.count()==0){
-            if(R.count() > ans.count()) ans = R;
-            return;
+    void add_edge(int a, int b) {
+        edge.emplace_back(a, b);
+        ++deg[a]; ++deg[b];
+    }
+    int solve() {
+        vector<int> ord;
+        for (int i = 0; i < n; ++i) ord.push_back(i);
+        sort(ord.begin(), ord.end(), [&](const int &a, const int &b) { return deg[a] < deg[b]; });
+        vector<int> id(n);
+        for (int i = 0; i < n; ++i) id[ord[i]] = i;
+        for (auto e : edge) {
+            int u = id[e.first], v = id[e.second];
+            adj[u][v] = adj[v][u] = true;
         }
-        bits cur = P|X; int pivot = -1, sz = -1;
-        for(int u=cur._Find_first();u<n;u=cur._Find_next(u)){
-            if(deg[u] > sz){
-                sz = deg[u];
-                pivot = u;
-            }
-        }
-        cur = P&(~G[pivot]), sz = 0;
-        for(int u=cur._Find_first();u<n;u=cur._Find_next(u)){
-            int pre=R[u]; R[u]=1;
-            BronKerbosch(R, P&G[u], X&G[u]);
-            R[u]=pre;
-            P[u]=0;
-            X[u]=1;
+        bitset<maxn> r, p;
+        for (int i = 0; i < n; ++i) p[i] = true;
+        ans = 0;
+        dfs(r, p);
+        return ans;
+    }
+    void dfs(bitset<maxn> r, bitset<maxn> p) {
+        if (p.count() == 0) return ans = max(ans, (int)r.count()), void();
+        if ((r | p).count() <= ans) return;
+        int now = p._Find_first();
+        bitset<maxn> cur = p & ~adj[now];
+        for (now = cur._Find_first(); now < n; now = cur._Find_next(now)) {
+            r[now] = true;
+            dfs(r, p & adj[now]);
+            r[now] = false;
+            p[now] = false;
         }
     }
-public:
-    void init(int n_){
-        n = n_;
-        for(int i=0;i<n;i++) G[i].reset();
-        ans.reset();
-    }
-    void add_edges(int u, bits S){
-        G[u] = S;
-    }
-    void add_edge(int u, int v){
-        G[u][v]=1;
-        G[v][u]=1;
-    }
-    int solve(){
-        sort_by_degree();
-        bits pob = (1<<n)-1, nob = 0;
-        for(int i=0;i<n;i++){
-            int v = deo[i];
-            BronKerbosch(bits(1<<v), pob&G[v], nob&G[v]);
-            pob[v] = 0;
-            nob[v] = 1;
-        }
-        return ans.count();
-    }
-} cli;
+};
