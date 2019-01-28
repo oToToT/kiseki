@@ -19,7 +19,7 @@ struct KM{
       } else {
         vy[y] = 1;
         if (match[y] == -1 || DFS(match[y]))
-            { match[y] = x; return true; }
+        { match[y] = x; return true; }
       }
     }
     return false;
