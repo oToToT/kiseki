@@ -18,8 +18,8 @@ private:
   }
 public:
   inline void init(int n_){
-    G.resize(n); rG.resize(n);
     n=n_, num_=0;
+    G.resize(n); rG.resize(n);
     num.resize(n);
     for(int i=0;i<n;i++) G[i].clear();
     for(int i=0;i<n;i++) rG[i].clear();
