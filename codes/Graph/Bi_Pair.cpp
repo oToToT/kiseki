@@ -1,4 +1,4 @@
-class BipartieMatching{
+class BipartiteMatching{
   private:
     vector<int> X[N], Y[N];
     int fX[N], fY[N], n;
@@ -19,12 +19,12 @@ class BipartieMatching{
       n=_n;
       for(int i=0;i<n;i++){
         X[i].clear();
-        Y[i].clear());
+        Y[i].clear();
         fX[i]=fY[i]=-1;
       }
       walked.reset();
     }
-    void AddEdge(int x, int y){
+    void add_edge(int x, int y){
       X[x].push_back(y);
       Y[y].push_back(y);
     }
