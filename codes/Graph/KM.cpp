@@ -24,7 +24,7 @@ struct KM{
     }
     return false;
   }
-  int solve(){
+  lld solve(){
     fill(match,match+n,-1);
     fill(lx,lx+n,-INF); fill(ly,ly+n,0);
     for (int i=0; i<n; i++)
