@@ -4,7 +4,7 @@ struct Point{
 } arr[N];
 
 inline llf get_dis(Point a, Point b){
-  return sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y));
+  return hypot(a.x-b.x, a.y-b.y);
 }
 
 llf solve(){
