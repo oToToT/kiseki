@@ -1,10 +1,8 @@
 /*
    polynomial multiply:
-   DFT(a, len);
-   DFT(b, len);
+   DFT(a, len); DFT(b, len);
    for(int i=0;i<len;i++) c[i] = a[i]*b[i];
    iDFT(c, len);
-   yeah~ go result in c
    (len must be 2^k and >= 2*(max(a, b)))
    Hand written Cplx would be 2x faster
  */
