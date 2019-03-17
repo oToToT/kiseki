@@ -5,10 +5,10 @@ namespace Treap{
     int size, cnt, sum;
     uint32_t pri;
     node *lc, *rc;
-    node(): size( 0 ), cnt( 0 ), sum( 0 ), pri( rand() ),
-            lc( nullptr ), rc( nullptr ) {}
-    node( int x ): size( 1 ), cnt( x ), sum( x ), pri( rand() ),
-            lc( nullptr ), rc( nullptr ) {}
+    node():size(0),cnt(0),sum(0),pri(rand()),
+           lc(nullptr),rc(nullptr){}
+    node(int x):size(1),cnt(x),sum(x),pri(rand()),
+                lc(nullptr),rc(nullptr){}
     void pull() {
       sum = cnt;
       if ( lc ) sum += lc->sum;
@@ -30,11 +30,11 @@ namespace Treap{
       return R;
     }
   }
-  void split_by_size( node* rt, int k, node*& L, node*& R ) {
+  void split_by_size(node*rt,int k,node*&L,node*&R){
     if ( not rt ) L = R = nullptr;
     else if( sz( rt->lc ) + 1 <= k ) {
       L = rt;
-      split_by_size( rt->rc, k - sz( rt->lc ) - 1, L->rc, R );
+      split_by_size(rt->rc,k-sz(rt->lc)-1,L->rc,R);
       L->pull();
     } else {
       R = rt;
@@ -42,11 +42,11 @@ namespace Treap{
       R->pull();
     }
   }
-  void split_by_sum( node* rt, int k, node*& L, node*& R ) {
+  void split_by_sum(node*rt,int k,node*&L,node*&R){
     if ( not rt ) L = R = nullptr;
     else if( sm( rt->lc ) + rt->cnt <= k ) {
       L = rt;
-      split_by_sum( rt->rc, k - sm( rt->lc ) - rt->cnt, L->rc, R );
+      split_by_sum(rt->rc,k-sm(rt->lc)-rt->cnt,L->rc,R);
       L->pull();
     } else {
       R = rt;

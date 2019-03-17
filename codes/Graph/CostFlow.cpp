@@ -3,7 +3,7 @@ class MiniCostMaxiFlow{
   using WeiT = int64_t;
   using PCW = pair<CapT,WeiT>;
   static constexpr CapT INF_CAP = 1 << 30;
-  static constexpr WeiT INF_WEI = static_cast<WeiT>(1)<<60;
+  static constexpr WeiT INF_WEI = 1LL<<60;
 private:
   struct Edge{
     int to, back;

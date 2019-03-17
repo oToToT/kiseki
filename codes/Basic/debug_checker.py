@@ -1,16 +1,12 @@
 #! /usr/bin/env python3
 import subprocess, platform
-
 os_name = platform.system()
-cmd = []
-prefix = ""
-
+cmd,prefix = [],""
 if os_name == 'Windows':
   cmd=["cmd", "/C"]
 else:
   cmd = ["bash", "-c"]
   prefix = "./"
-
 def GetTestData(exe):
   myout=subprocess.check_output(cmd+["%s%s"%(prefix, exe)])
   return myout.decode("utf8")
