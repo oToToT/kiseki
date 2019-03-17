@@ -1,23 +1,28 @@
-int largest_empty_rectangle(){
-  int max_area = 0;
-  for (int i=1; i<=n; ++i) {
-    for (int j=1; j<=n; ++j)
-      if (array[i][j]) wl[j] = wl[j-1] + 1;
-      else wl[j] = 0;
-    for (int j=n; j>=1; --j)
-      if (array[i][j]) wr[j] = wr[j+1] + 1;
-      else wr[j] = 0;
-    for (int j=1; j<=n; ++j)
-      if (array[i][j]) h[j] = h[j] + 1;
-      else h[j] = 0;
-     for (int j=1; j<=n; ++j)
-      if (l[j] == 0) l[j] = wl[j];
-      else l[j] = min(wl[j], l[j]);
-    for (int j=1; j<=n; ++j)
-      if (r[j] == 0) r[j] = wr[j];
-      else r[j] = min(wr[j], r[j]);
-    for (int j=1; j<=n; ++j)
-      max_area = max(max_area, (l[j] + r[j] - 1) * h[j]);
-  }
-  return max_area;
+int max_empty_rect(int n, int m, bool blocked[N][N]){
+    static int mxu[2][N], me=0,he=1,ans=0;
+    for(int i=0;i<m;i++) mxu[he][i]=0;
+    for(int i=0;i<n;i++){
+        stack<PII,vector<PII>> stk;
+        for(int j=0;j<m;++j){
+            if(blocked[i][j]) mxu[me][j]=0;
+            else mxu[me][j]=mxu[he][j]+1;
+            int la = j;
+            while(!stk.empty()&&stk.top().FF>mxu[me][j]){
+                int x1 = i - stk.top().FF, x2 = i;
+                int y1 = stk.top().SS, y2 = j;
+                la = stk.top().SS; stk.pop();
+                ans=max(ans,(x2-x1)*(y2-y1));
+            }
+            if(stk.empty()||stk.top().FF<mxu[me][j])
+                stk.push({mxu[me][j],la});
+        }
+        while(!stk.empty()){
+            int x1 = i - stk.top().FF, x2 = i;
+            int y1 = stk.top().SS-1, y2 = m-1;
+            stk.pop();
+            ans=max(ans,(x2-x1)*(y2-y1));
+        }
+        swap(me,he);
+    }
+    return ans;
 }
