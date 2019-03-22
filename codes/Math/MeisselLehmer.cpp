@@ -3,12 +3,12 @@ lld pi[N];
 vector<int> primes;
 bool sieved[N];
 lld cube_root(lld x){
-  lld s = static_cast<lld>(cbrt(x - static_cast<long double>(0.1)));
+  lld s=cbrt(x-static_cast<long double>(0.1));
   while(s*s*s <= x) ++s;
   return s-1;
 }
 lld square_root(lld x){
-  lld s = static_cast<lld>(sqrt(x - static_cast<long double>(0.1)));
+  lld s=sqrt(x-static_cast<long double>(0.1));
   while(s*s <= x) ++s;
   return s-1;
 }
@@ -28,18 +28,18 @@ void init(){
 lld phi(lld m, lld n) {
   static constexpr int MM = 80000, NN = 500;
   static lld val[MM][NN];
-  if(m < MM and n < NN and val[m][n]) return val[m][n] - 1;
+  if(m<MM&&n<NN&&val[m][n])return val[m][n]-1;
   if(n == 0) return m;
   if(primes[n] >= m) return 1;
-  lld ret = phi(m, n - 1) - phi(m / primes[n], n - 1);
-  if(m < MM and n < NN) val[m][n] = ret + 1;
+  lld ret = phi(m,n-1)-phi(m/primes[n],n-1);
+  if(m<MM&&n<NN) val[m][n] = ret+1;
   return ret;
 }
 lld pi_count(lld);
 lld P2(lld m, lld n) {
   lld sm = square_root(m), ret = 0;
   for(lld i = n+1;primes[i]<=sm;i++)
-    ret += pi_count(m / primes[i]) - pi_count(primes[i]) + 1;
+    ret+=pi_count(m/primes[i])-pi_count(primes[i])+1;
   return ret;
 }
 lld pi_count(lld m) {
