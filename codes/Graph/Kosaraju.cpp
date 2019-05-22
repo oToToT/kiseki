@@ -30,9 +30,8 @@ public:
   }
   void solve(){
     memset(vis, 0, sizeof(vis));
-    for(int i=0;i<n;i++){
+    for(int i=0;i<n;i++)
       if(!vis[i]) dfs(i);
-    }
     reverse(ALL(ord));
     memset(vis, 0, sizeof(vis));
     for(auto i: ord){
