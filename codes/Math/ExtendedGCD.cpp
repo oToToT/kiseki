@@ -1,8 +1,6 @@
-// By Adrien1018 (not knowing how to use.
 // ax+ny = 1, ax+ny == ax == 1 (mod n)
-tuple<int, int, int> extended_gcd(int a, int b) {
-  if (!b) return make_tuple(a, 1, 0);
-  int d, x, y;
-  tie(d, x, y) = extended_gcd(b, a % b);
-  return make_tuple(d, y, x - (a / b) * y);
+void exgcd(lld x,lld y,lld &g,lld &a,lld &b) {
+  if (y == 0) g=x,a=1,b=0;
+  else
+    exgcd(y,x%y,g,b,a),b-=(x/y)*a;
 }
