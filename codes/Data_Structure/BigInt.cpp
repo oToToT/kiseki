@@ -12,9 +12,8 @@ class BigInt{
       if(len() == 0 and a.len() == 0) return 0;
       if(neg ^ a.neg) return (int)a.neg*2 - 1;
       if(len() != a.len()) return neg?a.len()-len():len()-a.len();
-      for(int i=len()-1;i>=0;i--) if(dig[i] != a.dig[i]) {
+      for(int i=len()-1;i>=0;i--) if(dig[i] != a.dig[i])
         return neg?a.dig[i]-dig[i]:dig[i]-a.dig[i];
-      }
       return 0;
     }
     inline void trim(){
@@ -124,15 +123,15 @@ class BigInt{
       swap(a.dig, b.dig); swap(a.neg, b.neg);
     }
     friend istream& operator>>(istream& ss, BigInt& a){
-      string s; ss >> s;
-      a = s;
+      string s; ss >> s; a = s;
       return ss;
     }
     friend ostream& operator<<(ostream& ss, const BigInt& a){
       if(a.len() == 0) return ss << '0';
       if(a.neg) ss << '-';
       ss << a.dig.back();
-      for(int i=a.len()-2;i>=0;i--) ss << setw(LOG_BASE) << setfill('0') << a.dig[i];
+      for(int i=a.len()-2;i>=0;i--)
+        ss<<setw(LOG_BASE)<<setfill('0')<<a.dig[i];
       return ss;
     }
     inline void print() const {
