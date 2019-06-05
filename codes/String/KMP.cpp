@@ -12,9 +12,11 @@ void KMP(char s1[], char s2[], int n, int m){
     while(j > 0 and ss[i]!=ss[j]) j = F[j];
     F[i+1] = (ss[i]==ss[j]?j+1:0);
   }
-  // just find (F[len2+i] == len2), i from 1 to len+1 for matching
+  // just find (F[len2+i] == len2)
+  // i from 1 to len+1 for matching
 }
 /* 
   [0, i]是個循環字串，且循環節為i-f[i]：
-  if(f[i]>0 and i%(i-f[i])==0) cout << i << " " << i/(i-f[i]) << '\n';
+  if(f[i]>0 and i%(i-f[i])==0)
+  cout << i << " " << i/(i-f[i]) << '\n';
 */
