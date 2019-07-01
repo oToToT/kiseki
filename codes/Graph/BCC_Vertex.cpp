@@ -12,6 +12,7 @@ class BCC{
           low[ u ] = min( low[ u ], low[ e.first ] );
         } else {
           dfs( e.first, u, dfn + 1 ); child ++;
+          low[ u ] = min( low[ u ], low[ e.first ] );
           if ( low[ e.first ] >= dfn ) ap[ u ] = true;
         }
       }
