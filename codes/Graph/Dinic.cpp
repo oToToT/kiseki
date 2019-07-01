@@ -43,8 +43,8 @@ public:
     fill(G.begin(), G.end(), vector<Edge>());
   }
   void add_edge(int u, int v, CapT c){
-    G[u].push_back({v, (int)(G[v].size()), c});
-    G[v].push_back({u, (int)(G[u].size())-1, 0});
+    G[u].push_back({v, (int)G[v].size(), c});
+    G[v].push_back({u, ((int)G[u].size())-1, 0});
   }
   CapT max_flow(){
     CapT ret = 0;
