@@ -1,7 +1,7 @@
 //stack resize(change esp to rsp if 64-bit system)
 asm( "mov %0,%%esp\n" ::"g"(mem+10000000) );
 // craziest way
-static void run_with_stack_size(void(*func)(),size_t stsize){
+static void run_stack_sz(void(*func)(),size_t stsize){
   char *stack, *send;
   stack=(char *)malloc(stsize);
   send=stack+stsize-16;

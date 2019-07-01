@@ -7,17 +7,18 @@ class BigInt{
     static constexpr int LOG_BASE = 9;
     vector<lld> dig;
     bool neg;
-    inline int len()const{return (int)dig.size();}
+    inline int len() const { return (int) dig.size(); }
     inline int cmp_minus(const BigInt& a) const {
-      if(len() == 0 and a.len() == 0) return 0;
-      if(neg ^ a.neg) return (int)a.neg*2 - 1;
-      if(len() != a.len()) return neg?a.len()-len():len()-a.len();
-      for(int i=len()-1;i>=0;i--) if(dig[i] != a.dig[i])
+      if(len() == 0 && a.len() == 0) return 0;
+      if(neg ^ a.neg)return (int)a.neg*2 - 1;
+      if(len()!=a.len())
+        return neg?a.len()-len():len()-a.len();
+      for(int i=len()-1;i>=0;i--) if(dig[i]!=a.dig[i])
         return neg?a.dig[i]-dig[i]:dig[i]-a.dig[i];
       return 0;
     }
     inline void trim(){
-      while(!dig.empty() and dig.back()==0) dig.pop_back();
+      while(!dig.empty()&&!dig.back())dig.pop_back();
       if(dig.empty()) neg = false;
     }
   public:
@@ -28,18 +29,25 @@ class BigInt{
     }
     BigInt(const string& a): dig(vector<lld>()){
       assert(!a.empty()); neg = (a[0]=='-');
-      for(int i=((int)(a.size()))-1;i>=neg;i-=LOG_BASE){
+      for(int i=((int)a.size())-1;i>=neg;i-=LOG_BASE){
         lld cur = 0;
-        for(int j=min(LOG_BASE-1, i-neg);j>=0;j--) cur = cur*10+a[i-j]-'0';
+        for(int j=min(LOG_BASE-1,i-neg);j>=0;j--)
+          cur = cur*10+a[i-j]-'0';
         dig.push_back(cur);
       } trim();
     }
-    inline bool operator<(const BigInt& a)const{return cmp_minus(a)<0;}
-    inline bool operator<=(const BigInt& a)const{return cmp_minus(a)<=0;}
-    inline bool operator==(const BigInt& a)const{return cmp_minus(a)==0;}
-    inline bool operator!=(const BigInt& a)const{return cmp_minus(a)!=0;}
-    inline bool operator>(const BigInt& a)const{return cmp_minus(a)>0;}
-    inline bool operator>=(const BigInt& a)const{return cmp_minus(a)>=0;}
+    inline bool operator<(const BigInt& a)const
+      {return cmp_minus(a)<0;}
+    inline bool operator<=(const BigInt& a)const
+      {return cmp_minus(a)<=0;}
+    inline bool operator==(const BigInt& a)const
+      {return cmp_minus(a)==0;}
+    inline bool operator!=(const BigInt& a)const
+      {return cmp_minus(a)!=0;}
+    inline bool operator>(const BigInt& a)const
+      {return cmp_minus(a)>0;}
+    inline bool operator>=(const BigInt& a)const
+      {return cmp_minus(a)>=0;}
     BigInt operator-() const {
       BigInt ret = *this;
       ret.neg ^= 1;
@@ -81,17 +89,18 @@ class BigInt{
       return ret;
     }
     BigInt operator*(const BigInt& a) const {
-      if(len()==0 or a.len()==0) return 0;
+      if(!len()||!a.len()) return 0;
       BigInt ret; ret.dig.resize(len()+a.len()+1);
       ret.neg = neg ^ a.neg;
-      for(int i=0;i<len();i++) for(int j=0;j<a.len();j++){
-        ret.dig[i+j] += dig[i] * a.dig[j];
-        if(ret.dig[i+j] >= BASE) {
-          lld x = ret.dig[i+j] / BASE;
-          ret.dig[i+j+1] += x;
-          ret.dig[i+j] -= x * BASE;
+      for(int i=0;i<len();i++)
+        for(int j=0;j<a.len();j++){
+          ret.dig[i+j] += dig[i] * a.dig[j];
+          if(ret.dig[i+j] >= BASE) {
+            lld x = ret.dig[i+j] / BASE;
+            ret.dig[i+j+1] += x;
+            ret.dig[i+j] -= x * BASE;
+          }
         }
-      }
       ret.trim();
       return ret;
     }
@@ -105,7 +114,7 @@ class BigInt{
         while(r-l > 1){
           lld mid = (l+r)>>1;
           ret.dig[i] = mid;
-          if(ret*a <= (neg?-(*this):(*this))) l = mid;
+          if(ret*a<=(neg?-(*this):(*this))) l = mid;
           else r = mid;
         }
         ret.dig[i] = l;
@@ -126,7 +135,7 @@ class BigInt{
       string s; ss >> s; a = s;
       return ss;
     }
-    friend ostream& operator<<(ostream& ss, const BigInt& a){
+    friend ostream& operator<<(ostream& ss, BigInt& a){
       if(a.len() == 0) return ss << '0';
       if(a.neg) ss << '-';
       ss << a.dig.back();
@@ -138,7 +147,8 @@ class BigInt{
       if(len() == 0){putchar('0');return;}
       if(neg) putchar('-');
       printf("%" PRINTF_ARG, dig.back());
-      for(int i=len()-2;i>=0;i--) printf("%0" LOG_BASE_STR PRINTF_ARG, dig[i]);
+      for(int i=len()-2;i>=0;i--)
+        printf("%0" LOG_BASE_STR PRINTF_ARG, dig[i]);
     }
     #undef PRINTF_ARG
     #undef LOG_BASE_STR
