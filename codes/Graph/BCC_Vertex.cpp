@@ -5,15 +5,17 @@ class BCC{
     vector< int > low, id;
     vector< bool > vis, ap;
     void dfs( int u, int f, int dfn ) {
+      int child = 0;
       low[ u ] = dfn; vis[ u ] = true;
       for ( auto e : G[ u ] ) if ( e.first != f ) {
         if ( vis[ e.first ] ) {
           low[ u ] = min( low[ u ], low[ e.first ] );
         } else {
-          dfs( e.first, u, dfn + 1 );
+          dfs( e.first, u, dfn + 1 ); child ++;
           if ( low[ e.first ] >= dfn ) ap[ u ] = true;
         }
       }
+      if ( u == f and child == 1 ) ap[ u ] = false;
     }
     void mark( int u, int idd ) {
       // really??????????
