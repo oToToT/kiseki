@@ -2,21 +2,21 @@ class BCC{
   private:
     int n, ecnt;
     vector< vector< pair< int, int > > > G;
-    vector< int > low, id;
+    vector< int > low, dfn, id;
     vector< bool > vis, ap;
-    void dfs( int u, int f, int dfn ) {
+    void dfs( int u, int f, int d ) {
       int child = 0;
-      low[ u ] = dfn; vis[ u ] = true;
+      dfn[ u ] = low[ u ] = d; vis[ u ] = true;
       for ( auto e : G[ u ] ) if ( e.first != f ) {
         if ( vis[ e.first ] ) {
-          low[ u ] = min( low[ u ], low[ e.first ] );
+          low[ u ] = min( low[ u ], dfn[ e.first ] );
         } else {
-          dfs( e.first, u, dfn + 1 ); child ++;
+          dfs( e.first, u, d + 1 ); child ++;
           low[ u ] = min( low[ u ], low[ e.first ] );
-          if ( low[ e.first ] >= dfn ) ap[ u ] = true;
+          if ( low[ e.first ] >= d ) ap[ u ] = true;
         }
       }
-      if ( u == f and child == 1 ) ap[ u ] = false;
+      if ( u == f and child <= 1 ) ap[ u ] = false;
     }
     void mark( int u, int idd ) {
       // really??????????
@@ -30,14 +30,10 @@ class BCC{
   public:
     void init( int n_ ) {
       ecnt = 0, n = n_;
-      G.clear();
-      G.resize( n );
-      low.clear();
-      low.resize( n );
-      ap.clear();
-      ap.resize( n );
-      vis.clear();
-      vis.resize( n );
+      G.clear(); G.resize( n );
+      low.resize( n ); dfn.resize( n );
+      ap.clear(); ap.resize( n );
+      vis.clear(); vis.resize( n );
     }
     void add_edge( int u, int v ) {
       G[ u ].emplace_back( v, ecnt );
