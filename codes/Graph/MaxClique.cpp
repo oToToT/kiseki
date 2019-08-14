@@ -1,43 +1,67 @@
-struct MaxClique {
-    int n, deg[maxn], ans;
-    bitset<maxn> adj[maxn];
-    vector<pair<int, int>> edge;
-    void init(int _n) {
-        n = _n;
-        for (int i = 0; i < n; ++i) adj[i].reset();
-        for (int i = 0; i < n; ++i) deg[i] = 0;
-        edge.clear();
+#define N 111
+struct MaxClique{ // 0-base
+  typedef bitset< N > Int;
+  Int linkto[ N ] , v[ N ];
+  int n;
+  void init( int _n ){
+    n = _n;
+    for( int i = 0 ; i < n ; i ++ ){
+      linkto[ i ].reset();
+      v[ i ].reset();
     }
-    void add_edge(int a, int b) {
-        edge.emplace_back(a, b);
-        ++deg[a]; ++deg[b];
+  }
+  void add_edge( int a , int b ){
+    v[ a ][ b ] = v[ b ][ a ] = 1;
+  }
+  int popcount(const Int& val)
+  { return val.count(); }
+  int lowbit(const Int& val)
+  { return val._Find_first(); }
+  int ans , stk[ N ];
+  int id[ N ] , di[ N ] , deg[ N ];
+  Int cans;
+  void maxclique(int elem_num, Int candi){
+    if(elem_num > ans){
+      ans = elem_num;
+      cans.reset();
+      for( int i = 0 ; i < elem_num ; i ++ )
+        cans[ id[ stk[ i ] ] ] = 1;
     }
-    int solve() {
-        vector<int> ord;
-        for (int i = 0; i < n; ++i) ord.push_back(i);
-        sort(ord.begin(), ord.end(), [&](const int &a, const int &b) { return deg[a] < deg[b]; });
-        vector<int> id(n);
-        for (int i = 0; i < n; ++i) id[ord[i]] = i;
-        for (auto e : edge) {
-            int u = id[e.first], v = id[e.second];
-            adj[u][v] = adj[v][u] = true;
-        }
-        bitset<maxn> r, p;
-        for (int i = 0; i < n; ++i) p[i] = true;
-        ans = 0;
-        dfs(r, p);
-        return ans;
+    int potential = elem_num + popcount(candi);
+    if(potential <= ans) return;
+    int pivot = lowbit(candi);
+    Int smaller_candi = candi & (~linkto[pivot]);
+    while(smaller_candi.count() && potential>ans){
+      int next = lowbit(smaller_candi);
+      candi[ next ] = !candi[ next ];
+      smaller_candi[next] = !smaller_candi[next];
+      potential --;
+      if(next!=pivot
+        &&!(smaller_candi&linkto[next]).count())
+          continue;
+      stk[elem_num] = next;
+      maxclique(elem_num+1, candi&linkto[next]);
     }
-    void dfs(bitset<maxn> r, bitset<maxn> p) {
-        if (p.count() == 0) return ans = max(ans, (int)r.count()), void();
-        if ((r | p).count() <= ans) return;
-        int now = p._Find_first();
-        bitset<maxn> cur = p & ~adj[now];
-        for (now = cur._Find_first(); now < n; now = cur._Find_next(now)) {
-            r[now] = true;
-            dfs(r, p & adj[now]);
-            r[now] = false;
-            p[now] = false;
-        }
+  }
+  int solve(){
+    for( int i = 0 ; i < n ; i ++ ){
+      id[ i ] = i;
+      deg[ i ] = v[ i ].count();
     }
-};
+    sort( id , id + n , [&](int id1, int id2){
+          return deg[id1] > deg[id2]; } );
+    for( int i = 0 ; i < n ; i ++ )
+      di[ id[ i ] ] = i;
+    for( int i = 0 ; i < n ; i ++ )
+      for( int j = 0 ; j < n ; j ++ )
+        if( v[ i ][ j ] )
+          linkto[ di[ i ] ][ di[ j ] ] = 1;
+    Int cand; cand.reset();
+    for( int i = 0 ; i < n ; i ++ )
+      cand[ i ] = 1;
+    ans = 1;
+    cans.reset(); cans[ 0 ] = 1;
+    maxclique(0, cand);
+    return ans;
+  }
+} solver;
