@@ -64,6 +64,11 @@ public:
     G[ed].emplace_back(st,SZ(G[st])-1,-w,0);
   }
   PCW solve(){
+    /* might modify to
+    cc += ret.first * ret.second
+    or
+    ww += ret.first * ret.second
+    */
     CapT cc=0; WeiT ww=0;
     while(true){
       PCW ret=SPFA();
