@@ -2,7 +2,7 @@ struct Status{
 	ll x,y;
 };
 ll w;
-inline Status mult(const Status& a,const Status& b,ll mod){
+Status mult(const Status& a,const Status& b,ll mod){
 	Status res;
 	res.x=(a.x*b.x+a.y*b.y%mod*w)%mod;
 	res.y=(a.x*b.y+a.y*b.x)%mod;
