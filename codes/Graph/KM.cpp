@@ -3,7 +3,7 @@ struct KM{
   lld w[N][N], lx[N], ly[N], slack[N];
   int match[N], n, vx[N], vy[N], step_;
   void init(int n_){
-    n=n_,step=0;
+    n=n_,step_=0;
     memset(w,0,sizeof(w));
     memset(lx,0,sizeof(lx));
     memset(ly,0,sizeof(ly));
@@ -12,7 +12,7 @@ struct KM{
     memset(vx,0,sizeof(vx));
     memset(vy,0,sizeof(vy));
   }
-  void add_edge(int u,int v,lld w){w[u][v]=w;}
+  void add_edge(int u,int v,lld c){w[u][v]=c;}
   bool dfs(int x) {
     vx[x] = step_;
     for (int i = 0; i < n; ++i) {
