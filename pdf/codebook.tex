@@ -20,7 +20,7 @@
 % \usepackage{CJKulem}
 
 %\usepackage[T1]{fontenc}
-\usepackage{amsmath, courier, listings, fancyhdr, graphicx}
+\usepackage{courier}
 \topmargin=0pt
 \headsep=5pt
 \textheight=780pt
@@ -39,8 +39,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\setmainfont{Helvetica}                         %主要字型
-%\setmonofont{Courier New}	
 \setmainfont{Consolas}
 \setmonofont{Consolas}
 \setCJKmainfont{NotoSansCJKtc-Medium}           %中文字型
@@ -83,7 +81,6 @@ stringstyle=\itshape\color{Green4},
 \begin{document}
 \pagestyle{fancy}
 \fancyfoot{}
-%\fancyfoot[R]{\includegraphics[width=20pt]{ironwood.jpg}}
 \fancyhead[L]{National Taiwan University - NTU T1}
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -138,7 +135,7 @@ stringstyle=\itshape\color{Green4},
 \lstinputlisting{../codes/Graph/CostFlow.cpp}
 \subsection{General Graph Matching}
 \lstinputlisting{../codes/Graph/GeneralMatching.cpp}
-\subsection{MaximumFlow}
+\subsection{Dinic}
 \lstinputlisting{../codes/Graph/Dinic.cpp}
 \subsection{Kuhn Munkres}
 \lstinputlisting{../codes/Graph/KM.cpp}
@@ -150,6 +147,8 @@ stringstyle=\itshape\color{Green4},
 \lstinputlisting{../codes/Graph/MaxClique.cpp}
 \subsection{Min-Cut}
 \lstinputlisting{../codes/Graph/SW.cpp}
+\subsection{Vitural Tree}
+\lstinputlisting{../codes/Graph/virtual_tree.cpp}
 
 \section{Math}
 \subsection{Prime Table}
