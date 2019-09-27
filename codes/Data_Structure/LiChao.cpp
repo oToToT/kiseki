@@ -1,38 +1,51 @@
-namespace lichao {
-struct line {
-  long long a, b;
-  line(): a(0), b(0) {}
-  line(long long a, long long b): a(a), b(b) {}
-  long long operator()(int x) const {return a*x+b;}
+struct Line{
+  int m, k, id;
+  Line() : id( -1 ) {}
+  Line( int a, int b, int c )
+    : m( a ), k( b ), id( c ) {}
+  int at( int x ) { return m * x + k; }
 };
-line st[maxc * 4];
-int sz, lc[maxc * 4], rc[maxc * 4];
-int gnode() {
-  st[sz] = line(1e9, 1e9);
-  lc[sz] = -1, rc[sz] = -1;
-  return sz++;
-}
-void init() { sz = 0; }
-void add(int l, int r, line tl, int o) {
-  bool lcp = st[o](l) > tl(l);
-  bool mcp = st[o]((l + r) / 2) > tl((l + r) / 2);
-  if (mcp) swap(st[o], tl);
-  if (r - l == 1) return;
-  if (lcp != mcp) {
-    if (lc[o] == -1) lc[o] = gnode();
-    add(l, (l + r) / 2, tl, lc[o]);
-  } else {
-    if (rc[o] == -1) rc[o] = gnode();
-    add((l + r) / 2, r, tl, rc[o]);
-  }
-}
-long long query(int l, int r, int x, int o) {
-  if (r - l == 1) return st[o](x);
-  if (x < (l + r) / 2) {
-    if (lc[o] == -1) return st[o](x);
-    return min(st[o](x), query(l, (l+r)>>1, x, lc[o]));
-  } else {
-    if (rc[o] == -1) return st[o](x);
-    return min(st[o](x), query((l+r)>>1, r, x, rc[o]));
-  }
-}}
+class LiChao {
+  private:
+    int n; vector< Line > nodes;
+    inline int lc( int x ) { return 2 * x + 1; }
+    inline int rc( int x ) { return 2 * x + 2; }
+    void insert( int l, int r, int id, Line ln ) {
+      int m = ( l + r ) >> 1;
+      if ( nodes[ id ].id == -1 ) {
+        nodes[ id ] = ln;
+        return;
+      }
+      bool atLeft = nodes[ id ].at( l ) < ln.at( l );
+      if ( nodes[ id ].at( m ) < ln.at( m ) ) {
+        atLeft ^= 1;
+        swap( nodes[ id ], ln );
+      }
+
+      if ( r - l == 1 ) return;
+      if ( atLeft ) insert( l, m, lc( id ), ln );
+      else insert( m, r, rc( id ), ln );
+    }
+    int query( int l, int r, int id, int x ) {
+      int ret = 0;
+      if ( nodes[ id ].id != -1 )
+        ret = nodes[ id ].at( x );
+      int m = ( l + r ) >> 1;
+      if ( r - l == 1 ) return ret;
+      else if ( x < m )
+        return max( ret, query( l, m, lc( id ), x ) );
+      else
+        return max( ret, query( m, r, rc( id ), x ) );
+    }
+  public:
+    void build( int n_ ) {
+      n = n_; nodes.clear();
+      nodes.resize( n << 2, Line() );
+    }
+    void insert( Line ln ) {
+      insert( 0, n, 0, ln );
+    }
+    int query( int x ) {
+      return query( 0, n, 0, x );
+    }
+} lichao;
