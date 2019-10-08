@@ -1,4 +1,5 @@
-se nu rnu bs=2 ru mouse=a cin et ts=4 sw=4 sts=4
+se is nu rnu bs=2 ru mouse=a encoding=utf-8
+se cin et ts=4 sw=4 sts=4 t_Co=256
 syn on
+colorscheme ron
 filetype indent on
-inoremap {<CR> {<CR>}<Esc>O
