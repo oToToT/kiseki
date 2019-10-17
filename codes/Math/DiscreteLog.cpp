@@ -5,10 +5,8 @@ lld BSGS(lld P, lld B, lld N) {
   lld sq = (lld)sqrt(P);
   lld t = 1;
   for (int i = 0; i < sq; i++) {		
-    if (t == N)	
-      return i; 		
-    if (!R.count(t))
-      R[t] = i;
+    if (t == N)	return i; 		
+    if (!R.count(t)) R[t] = i;
     t = (t * B) % P;
   }
   lld f = inverse(t, P);
