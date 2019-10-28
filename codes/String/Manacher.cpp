@@ -1,7 +1,7 @@
 int z[maxn];
 int manacher(const string& s) {
   string t = ".";
-  for(int i=0;i<s.length();++i) t += s[i], t += '.';
+  for(char c:s)) t += c, t += '.';
   int l = 0, r = 0;
   for (int i = 1; i < t.length(); ++i) {
     z[i] = (r > i ? min(z[2 * l - i], r - i) : 1);
