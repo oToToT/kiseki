@@ -4,8 +4,8 @@ struct Graph{
   int lnk[N],vis[N],stp,n;
   void init( int _n ){
     stp = 0; e = 1; n = _n;
-    for( int i = 1 ; i <= n ; i ++ )
-      lnk[i] = vis[i] = 0;
+    for( int i = 0 ; i <= n ; i ++ )
+      head[i] = lnk[i] = vis[i] = 0;
   }
   void add_edge(int u,int v){
     // 1-base
