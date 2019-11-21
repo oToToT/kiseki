@@ -5,12 +5,8 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+pdf/codebook.synctex(busy)
+pdf/codebook.synctex.gz(busy)
 
 // Maciontish
-._codebook.pdf
-._README.md
 ._*
-
-// Visual Studio Code
-.vscode
-pdf/codebook.synctex(busy)

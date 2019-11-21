@@ -1,58 +1,63 @@
-struct KM{
-  static constexpr lld INF = 1LL<<60;
-  lld w[N][N], lx[N], ly[N], slack[N];
-  int match[N], n, vx[N], vy[N], step_;
-  void init(int n_){
-    n=n_,step_=0;
-    memset(w,0,sizeof(w));
-    memset(lx,0,sizeof(lx));
-    memset(ly,0,sizeof(ly));
-    memset(slack,0,sizeof(slack));
-    memset(match,0,sizeof(match));
-    memset(vx,0,sizeof(vx));
-    memset(vy,0,sizeof(vy));
-  }
-  void add_edge(int u,int v,lld c){w[u][v]=c;}
-  bool dfs(int x) {
-    vx[x] = step_;
-    for (int i = 0; i < n; ++i) {
-      if (vy[i]==step_) continue;
-      if (lx[x] + ly[i] > w[x][i]) {
-        slack[i] = min(slack[i], lx[x] + ly[i] - w[x][i]);
-        continue;
-      }
-      vy[i] = step_;
-      if (match[i] == -1 || dfs(match[i])) {
-        match[i] = x;
-        return true;
-      }
-    }
+class KM {
+private:
+  static constexpr lld INF = 1LL << 60;
+  vector<lld> hl,hr,slk;
+  vector<int> fl,fr,pre,qu;
+  vector<vector<lld>> w;
+  vector<bool> vl,vr;
+  int n, ql, qr;
+  bool check(int x) {
+    if (vl[x] = true, fl[x] != -1)
+      return vr[qu[qr++] = fl[x]] = true;
+    while (x != -1) swap(x, fr[fl[x] = pre[x]]);
     return false;
   }
-  lld solve() {
-    fill_n(match, n, -1);
-    fill_n(lx, n, -INF);
-    fill_n(ly, n, 0);
-    for (int i = 0; i < n; ++i)
-      for (int j = 0; j < n; ++j)
-        lx[i] = max(lx[i], w[i][j]);
-    for (int i = 0; i < n; ++i) {
-      fill_n(slack, n, INF);
-      while (true) {
-        step_++;
-        if (dfs(i)) break;
-        lld dlt = INF;
-        for (int j = 0; j < n; ++j) if (vy[j] != step_)
-          dlt = min(dlt, slack[j]);
-        for (int j = 0; j < n; ++j) {
-          if (vx[j]==step_) lx[j] -= dlt;
-          if (vy[j]==step_) ly[j] += dlt;
-          else slack[j] -= dlt;
+  void bfs(int s) {
+    fill(slk.begin(), slk.end(), INF);
+    fill(vl.begin(), vl.end(), false);
+    fill(vr.begin(), vr.end(), false);
+    ql = qr = 0;
+    qu[qr++] = s;
+    vr[s] = true;
+    while (true) {
+      lld d;
+      while (ql < qr) {
+        for (int x = 0, y = qu[ql++]; x < n; ++x) {
+          if(!vl[x] && slk[x]>=(d=hl[x]+hr[y]-w[x][y])){
+            if (pre[x] = y, d) slk[x] = d;
+            else if (!check(x)) return;
+          }
         }
       }
+      d = INF;
+      for (int x = 0; x < n; ++x)
+        if (!vl[x] && d > slk[x]) d = slk[x];
+      for (int x = 0; x < n; ++x) {
+        if (vl[x]) hl[x] += d;
+        else slk[x] -= d;
+        if (vr[x]) hr[x] -= d;
+      }
+      for (int x = 0; x < n; ++x)
+        if (!vl[x] && !slk[x] && !check(x)) return;
     }
+  }
+public:
+  void init( int n_ ) {
+    n = n_; qu.resize(n);
+    fl.clear(); fl.resize(n, -1);
+    fr.clear(); fr.resize(n, -1);
+    hr.clear(); hr.resize(n); hl.resize(n);
+    w.clear(); w.resize(n, vector<lld>(n));
+    slk.resize(n); pre.resize(n);
+    vl.resize(n); vr.resize(n);
+  }
+  void set_edge( int u, int v, lld x ) { w[u][v] = x; }
+  lld solve() {
+    for (int i = 0; i < n; ++i)
+      hl[i] = *max_element(w[i].begin(), w[i].end());
+    for (int i = 0; i < n; ++i) bfs(i);
     lld res = 0;
-    for (int i = 0; i < n; ++i) res += w[match[i]][i];
+    for (int i = 0; i < n; ++i) res += w[i][fl[i]];
     return res;
   }
 } km;
