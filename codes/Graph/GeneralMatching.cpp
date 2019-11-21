@@ -8,6 +8,7 @@ struct Graph{
       lnk[i] = vis[i] = 0;
   }
   void add_edge(int u,int v){
+    // 1-base
     to[e]=v,bro[e]=head[u],head[u]=e++;
     to[e]=u,bro[e]=head[v],head[v]=e++;
   }
@@ -21,9 +22,7 @@ struct Graph{
       }else if(vis[lnk[v]]<stp){
         int w=lnk[v];
         lnk[x]=v,lnk[v]=x,lnk[w]=0;
-        if(dfs(w)){
-          return true;
-        }
+        if(dfs(w)) return true;
         lnk[w]=v,lnk[v]=w,lnk[x]=0;
       }
     }
@@ -32,7 +31,7 @@ struct Graph{
   int solve(){
     int ans = 0;
     for(int i=1;i<=n;i++)
-      if(!lnk[i]){
+      if(not lnk[i]){
         stp++; ans += dfs(i);
       }
     return ans;
