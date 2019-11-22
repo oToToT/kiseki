@@ -9,8 +9,7 @@ Status mult(const Status& a,const Status& b,ll mod){
 	return res;
 }
 inline Status qpow(Status _base,ll _pow,ll _mod){
-	Status res;
-	res.x=1,res.y=0;
+	Status res = {1, 0};
 	while(_pow>0){
 		if(_pow&1) res=mult(res,_base,_mod);
 		_base=mult(_base,_base,_mod);
@@ -30,9 +29,7 @@ inline ll get_root(ll n,ll p){
 		w=((a*a-n)%p+p)%p;
 		if(check(w,p)==p-1) break;
 	}
-	Status res;
-	res.x=a;
-	res.y=1;
+	Status res = {a, 1}
 	res=qpow(res,(p+1)>>1,p);
 	return res.x;
 }

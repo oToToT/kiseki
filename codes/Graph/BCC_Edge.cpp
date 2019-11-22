@@ -5,8 +5,7 @@ private:
   vector< bool > bridge;
   vector< vector< PII > > G;
   void dfs( int w, int f ) {
-    dfn[ w ] = cnt++;
-    low[ w ] = dfn[ w ];
+    low[ w ] = dfn[ w ] = cnt++;
     for ( auto [ u, t ] : G[ w ] ) {
       if ( u == f ) continue;
       if ( dfn[ u ] != 0 ) {
@@ -20,12 +19,11 @@ private:
   }
 public:
   void init( int n, int m ) {
-    G.resize( n );
+    G.resize( n ); cnt = 0;
     fill( G.begin(), G.end(), vector< PII >() );
     bridge.clear(); bridge.resize( m );
     low.clear(); low.resize( n );
     dfn.clear(); dfn.resize( n );
-    cnt = 0;
   }
   void add_edge( int u, int v ) {
     // should check for multiple edge

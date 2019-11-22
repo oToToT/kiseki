@@ -4,12 +4,10 @@ struct KDTree {
     int x,y,x1,y1,x2,y2;
     int id,f;
     Node *L, *R;
-  }tree[MXN];
+  } tree[MXN], *root;
   int n;
-  Node *root;
   LL dis2(int x1, int y1, int x2, int y2) {
-    LL dx = x1-x2;
-    LL dy = y1-y2;
+    LL dx = x1-x2, dy = y1-y2;
     return dx*dx+dy*dy;
   }
   static bool cmpx(Node& a, Node& b){ return a.x<b.x; }
@@ -25,12 +23,10 @@ struct KDTree {
   }
   Node* build_tree(int L, int R, int dep) {
     if (L>R) return nullptr;
-    int M = (L+R)/2;
-    tree[M].f = dep%2;
-    nth_element(tree+L, tree+M, tree+R+1, tree[M].f ? cmpy : cmpx);
+    int M = (L+R)/2; tree[M].f = dep%2;
+    nth_element(tree+L,tree+M,tree+R+1,dep%2?cmpy:cmpx);
     tree[M].x1 = tree[M].x2 = tree[M].x;
     tree[M].y1 = tree[M].y2 = tree[M].y;
-
     tree[M].L = build_tree(L, M-1, dep+1);
     if (tree[M].L) {
       tree[M].x1 = min(tree[M].x1, tree[M].L->x1);
@@ -54,8 +50,7 @@ struct KDTree {
       return 0;
     return 1;
   }
-  void nearest(Node* r, int x, int y,
-               int &mID, LL &md2){
+  void nearest(Node* r, int x, int y,int &mID, LL &md2){
     if (!r || !touch(r, x, y, md2)) return;
     LL d2 = dis2(r->x, r->y, x, y);
     if (d2 < md2 || (d2 == md2 && mID < r->id)) {

@@ -16,8 +16,6 @@ bool isprime(llu x){
   if(!(x&1))return x==2;
   llu x1=x-1;int t=0;
   while(!(x1&1))x1>>=1,t++;
-  for(llu m:magic)
-    if(witn(m,x1,x,t))
-      return 0;
+  for(llu m:magic)if(witn(m,x1,x,t))return 0;
   return 1;
 }

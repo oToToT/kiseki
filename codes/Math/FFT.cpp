@@ -25,16 +25,13 @@ void tran(Cplx arr[],int n,Cplx omg[]) {
     for(auto p=arr;p!=arr+n;p+=l){
       for(int i=0;i<m;++i){
         Cplx t=omg[n/l*i]*p[m+i];
-        p[m+i]=p[i]-t;
-        p[i]+=t;
+        p[m+i]=p[i]-t; p[i]+=t;
       }
     }
   }
 }
-void DFT(Cplx arr[],int n){
-  tran(arr,n,omega[0]);
-}
+void DFT(Cplx arr[],int n){tran(arr,n,omega[0]);}
 void iDFT(Cplx arr[],int n){
   tran(arr,n,omega[1]);
-  for(int i=0;i<n;++i)arr[i]/=n;
+  for(int i=0;i<n;++i) arr[i]/=n;
 }

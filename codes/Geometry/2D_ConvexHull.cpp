@@ -26,12 +26,12 @@ public:
     vector<PT> stk(SZ(dots)<<1);
     int top = 0;
     for(auto p: dots){
-      while(top >= 2 and cross(p-stk[top-2], stk[top-1]-stk[top-2]) <= 0)
+      while(top >= 2 && cross(p-stk[top-2], stk[top-1]-stk[top-2]) <= 0)
         top --;
       stk[top++] = p;
     }
     for(int i=SZ(dots)-2, t = top+1;i>=0;i--){
-      while(top >= t and cross(dots[i]-stk[top-2], stk[top-1]-stk[top-2]) <= 0)
+      while(top >= t && cross(dots[i]-stk[top-2], stk[top-1]-stk[top-2]) <= 0)
         top --;
       stk[top++] = dots[i];
     }
