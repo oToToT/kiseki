@@ -18,10 +18,8 @@ class LiChao {
       }
       bool atLeft = nodes[ id ].at( l ) < ln.at( l );
       if ( nodes[ id ].at( m ) < ln.at( m ) ) {
-        atLeft ^= 1;
-        swap( nodes[ id ], ln );
+        atLeft ^= 1; swap( nodes[ id ], ln );
       }
-
       if ( r - l == 1 ) return;
       if ( atLeft ) insert( l, m, lc( id ), ln );
       else insert( m, r, rc( id ), ln );
@@ -42,10 +40,6 @@ class LiChao {
       n = n_; nodes.clear();
       nodes.resize( n << 2, Line() );
     }
-    void insert( Line ln ) {
-      insert( 0, n, 0, ln );
-    }
-    int query( int x ) {
-      return query( 0, n, 0, x );
-    }
+    void insert( Line ln ) { insert( 0, n, 0, ln ); }
+    int query( int x ) { return query( 0, n, 0, x ); }
 } lichao;

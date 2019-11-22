@@ -1,5 +1,3 @@
-#include <vector>
-
 template<typename T>
 class BIT{
 #define ALL(x) begin(x), end(x)

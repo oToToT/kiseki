@@ -14,8 +14,7 @@ void init() {
     hd[ v ] = i << 1 | 1;
   }
   for ( int i = 0 ; i < q ; ++ i ) {
-    cin >> que[ i ].u >> que[ i ].v;
-    que[ i ].id = i;
+    cin >> que[ i ].u >> que[ i ].v; que[ i ].id = i;
   }
 }
 int dfn[N], dfn_, block_id[N], block_, stk[N], stk_;

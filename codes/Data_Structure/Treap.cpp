@@ -14,12 +14,10 @@ namespace Treap{
   node* merge( node* L, node* R ) {
     if ( not L or not R ) return L ? L : R;
     if ( L->pri > R->pri ) {
-      L->rc = merge( L->rc, R );
-      L->pull();
+      L->rc = merge( L->rc, R ); L->pull();
       return L;
     } else {
-      R->lc = merge( L, R->lc );
-      R->pull();
+      R->lc = merge( L, R->lc ); R->pull();
       return R;
     }
   }

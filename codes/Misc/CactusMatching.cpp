@@ -1,7 +1,5 @@
-const int maxn=200010;
 vector<int> init_g[maxn],g[maxn*2];
-int dfn[maxn],low[maxn],par[maxn],dfs_idx,bcc_id;
-int n;
+int n,dfn[maxn],low[maxn],par[maxn],dfs_idx,bcc_id;
 void tarjan(int u){
   dfn[u]=low[u]=++dfs_idx;
   for(int i=0;i<(int)init_g[u].size();i++){

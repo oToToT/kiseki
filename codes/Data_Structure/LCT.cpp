@@ -3,15 +3,10 @@ struct Node{
   int xor_sum,v;
   bool is_rev;
   Node(int _v){
-    v=xor_sum=_v;
-    par=nullptr;
-    ch[0]=ch[1]=nullptr;
-    is_rev=false;
+    v=xor_sum=_v;is_rev=false;
+    par=ch[0]=ch[1]=nullptr;
   }
-  inline void set_rev(){
-    is_rev^=1;
-    swap(ch[0],ch[1]);
-  }
+  inline void set_rev(){is_rev^=1;swap(ch[0],ch[1]);}
   inline void down(){
     if(is_rev){
       if(ch[0]!=nullptr) ch[0]->set_rev();
@@ -34,9 +29,7 @@ struct Node{
     return par==nullptr ||\
       (par->ch[0]!=this && par->ch[1]!=this);
   }
-  inline bool is_rch(){
-    return !is_root() && par->ch[1]==this;
-  }
+  bool is_rch(){return !is_root() && par->ch[1]==this;}
 } *node[maxn],*stk[maxn];
 int top;
 void to_child(Node* p,Node* c,bool dir){
@@ -78,42 +71,27 @@ inline void access(Node* node){
   }
 }
 inline void change_root(Node* node){
-  access(node);
-  splay(node);
-  node->set_rev();
+  access(node);splay(node);node->set_rev();
 }
 inline void link(Node* x,Node* y){
-  change_root(x);
-  splay(x);
-  x->par=y;
+  change_root(x);splay(x);x->par=y;
 }
 inline void split(Node* x,Node* y){
-  change_root(x);
-  access(y);
-  splay(x);
-  to_child(x,nullptr,true);
-  y->par=nullptr;
+  change_root(x);access(y);splay(x);
+  to_child(x,nullptr,true);y->par=nullptr;
 }
 inline void change_val(Node* node,int v){
-  access(node);
-  splay(node);
-  node->v=v;
-  node->up();
+  access(node);splay(node);node->v=v;node->up();
 }
 inline int query(Node* x,Node* y){
-  change_root(x);
-  access(y);
-  splay(y);
+  change_root(x);access(y);splay(y);
   return y->xor_sum;
 }
 inline Node* find_root(Node* node){
-  access(node);
-  splay(node);
+  access(node);splay(node);
   Node* last=nullptr;
   while(node!=nullptr){
-    node->down();
-    last=node;
-    node=node->ch[0];
+    node->down();last=node;node=node->ch[0];
   }
   return last;
 }

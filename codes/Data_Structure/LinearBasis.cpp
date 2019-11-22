@@ -5,8 +5,7 @@ private:
   inline llu two( int x ){ return ( ( llu ) 1 ) << x; }
 public:
   void init( int n_ ) {
-    n = n_; B.clear();
-    B.resize( n ); sz = 0;
+    n = n_; B.clear(); B.resize( n ); sz = 0;
   }
   void insert( llu x ) {
     // add x into B
