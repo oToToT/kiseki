@@ -12,6 +12,7 @@ struct Line {
     return dcmp( cross( st, ed, rhs.st ) ) < 0;
   }
 };
+// cross(pt, line.ed-line.st) >= 0 <-> pt in half plane
 vector< Line > lines;
 deque< Line > que;
 deque< Point > pt;

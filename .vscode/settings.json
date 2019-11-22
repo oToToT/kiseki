@@ -1,5 +1,6 @@
 {
     "[cpp]":{
         "editor.rulers": [56]
-    }
+    },
+    "editor.tabSize": 2
 }
