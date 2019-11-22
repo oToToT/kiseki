@@ -38,8 +38,7 @@ class AhoCorasick{
           node* u_f = u->fail;
           while ( u_f ) {
             if ( not u_f->nxt[ i ] ) {
-              u_f = u_f->fail;
-              continue;
+              u_f = u_f->fail; continue;
             }
             u->nxt[ i ]->fail = u_f->nxt[ i ];
             break;
