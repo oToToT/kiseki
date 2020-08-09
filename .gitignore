@@ -5,6 +5,7 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+*.out
 pdf/codebook.synctex(busy)
 pdf/codebook.synctex.gz(busy)
 

@@ -15,11 +15,11 @@ struct Line{
   bool equal(const Line& o, true_type) const {
     return fabs(a-o.a) < EPS and fabs(b-o.b) < EPS and fabs(c-o.b) < EPS;
   }
-  bool euqal(const Line& o, false_type) const {
+  bool equal(const Line& o, false_type) const {
     return a==o.a and b==o.b and c==o.c;
   }
   bool operator==(const Line& o) const {
-    return euqal(o, is_floating_point<T>());
+    return equal(o, is_floating_point<T>());
   }
   bool operator!=(const Line& o) const {
     return !(*this == o);
@@ -30,7 +30,7 @@ struct Line{
   friend inline bool on_line__(const Point<T>& p, const Line& l, false_type){
     return l.a*p.x + l.b*p.y + l.c == 0;
   }
-  friend inline bool on_line(const Point<T>&p const Line& l){
+  friend inline bool on_line(const Point<T>&p, const Line& l){
     return on_line__(p, l, is_floating_point<T>());
   }
   friend inline bool is_parallel__(const Line& x, const Line& y, true_type){

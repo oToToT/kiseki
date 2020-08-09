@@ -18,30 +18,14 @@ struct Point{
   Point operator-(const Point& o) const {
     return Point(x-o.x, y-o.y);
   }
-  Point operator-=(const Point& o){
-    x-=o.x, y-=o.y;
-    return *this;
-  }
   Point operator+(const Point& o) const {
     return Point(x+o.x, y+o.y);
-  }
-  Point operator+=(const Point& o){
-    x+=o.x, y+=o.y;
-    return *this;
   }
   Point operator*(const T& k) const {
     return Point(x*k, y*k);
   }
-  Point operator*=(const T& k){
-    x*=k, y*=k;
-    return *this;
-  }
   Point operator/(const T& k) const {
     return Point(x/k, y/k);
-  }
-  Point operator/=(const T& k){
-    x/=k, y/=k;
-    return *this;
   }
   Point operator-() const {
     return Point(-x, -y);
@@ -69,7 +53,8 @@ struct Point{
   bool operator<(const Point& o) const {
     return theta() < o.theta();
     // sort like what pairs did
-    // if(is_floating_point<T>()) return fabs(x-o.x)<EPS?y<o.y:x<o.x;
+    // if (is_floating_point<T>())
+    //   return fabs(x-o.x)<EPS?y<o.y:x<o.x;
     // else return tie(x, y) < tie(o.x, o.y);
   }
   friend inline T cross(const Point& a, const Point& b){

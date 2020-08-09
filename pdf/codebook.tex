@@ -17,6 +17,11 @@
 \usepackage[compact]{titlesec}    %compact mode for reducing margin
 \usepackage{amsmath}
 \usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{hyperref}
+\hypersetup{
+  linktoc=all,
+  hidelinks
+}
 % \usepackage{CJKulem}
 
 %\usepackage[T1]{fontenc}
@@ -224,9 +229,11 @@ stringstyle=\itshape\color{Green4},
 \subsection{Point Class}
 \lstinputlisting{../codes/Geometry/point_class.cpp}
 \subsection{Circle Class}
-\lstinputlisting{../codes/Geometry/Circle.cpp}
-% \subsection{Line Class}
-% \lstinputlisting{../codes/Geometry/line_class.cpp}
+\lstinputlisting{../codes/Geometry/circle_class.cpp}
+\subsection{Segment Class}
+\lstinputlisting{../codes/Geometry/line_class.cpp}
+\subsection{Line Class}
+\lstinputlisting{../codes/Geometry/line_class.cpp}
 \subsection{Triangle Circumcentre}
 \lstinputlisting{../codes/Geometry/outer_point.cpp}
 \subsection{2D Convex Hull}
