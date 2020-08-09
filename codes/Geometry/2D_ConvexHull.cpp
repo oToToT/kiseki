@@ -2,7 +2,7 @@ template<typename T>
 class ConvexHull_2D{
 private:
   typedef Point<T> PT;
-  vector<PT> dots;
+  vector<PT> d;
   struct myhash{
     uint64_t operator()(const PT& a) const {
       uint64_t xx=0, yy=0;
@@ -17,30 +17,26 @@ private:
   };
   unordered_set<PT, myhash> in_hull;
 public:
-  inline void init(){in_hull.clear();dots.clear();}
-  void insert(const PT& x){dots.PB(x);}
+  void init(){in_hull.clear();d.clear();}
+  void insert(const PT& x){d.PB(x);}
   void solve(){
-    sort(ALL(dots), [](const PT& a, const PT& b){
-      return tie(a.x, a.y) < tie(b.x, b.y);
-    });
-    vector<PT> stk(SZ(dots)<<1);
-    int top = 0;
-    for(auto p: dots){
-      while(top >= 2 && cross(p-stk[top-2], stk[top-1]-stk[top-2]) <= 0)
-        top --;
-      stk[top++] = p;
+    sort(ALL(d), [](const PT& a, const PT& b){
+      return tie(a.x, a.y) < tie(b.x, b.y);});
+    vector<PT> s(SZ(d)<<1); int o = 0;
+    for(auto p: d) {
+      while(o>=2 && cross(p-s[o-2],s[o-1]-s[o-2])<=0)
+        o--;
+      s[o++] = p;
     }
-    for(int i=SZ(dots)-2, t = top+1;i>=0;i--){
-      while(top >= t && cross(dots[i]-stk[top-2], stk[top-1]-stk[top-2]) <= 0)
-        top --;
-      stk[top++] = dots[i];
+    for(int i=SZ(d)-2, t = o+1;i>=0;i--){
+      while(o>=t&&cross(d[i]-s[o-2],s[o-1]-s[o-2])<=0)
+        o--;
+      s[o++] = d[i];
     }
-    stk.resize(top-1);
-    swap(stk, dots);
-    for(auto i: stk) in_hull.insert(i);
+    s.resize(o-1); swap(s, d);
+    for(auto i: s) in_hull.insert(i);
   }
-  vector<PT> get(){return dots;}
-  inline bool in_it(const PT& x){
-    return in_hull.find(x)!=in_hull.end();
-  }
+  vector<PT> get(){return d;}
+  bool in_it(const PT& x){
+    return in_hull.find(x)!=in_hull.end();}
 };

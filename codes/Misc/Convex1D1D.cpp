@@ -3,24 +3,24 @@ struct segment {
   segment() {}
   segment(int a, int b, int c): i(a), l(b), r(c) {}
 };
-inline lld f(int l, int r) {return dp[l] + w(l + 1, r);}
+inline lld f(int l, int r){return dp[l] + w(l+1, r);}
 void solve() {
-  dp[0] = 0ll;
-  deque<segment> deq; deq.push_back(segment(0, 1, n));
+  dp[0] = 0;
+  deque<segment> dq; dq.push_back(segment(0, 1, n));
   for (int i = 1; i <= n; ++i) {
-    dp[i] = f(deq.front().i, i);
-    while(deq.size()&&deq.front().r<i+1)deq.pop_front();
-    deq.front().l = i + 1;
+    dp[i] = f(dq.front().i, i);
+    while(dq.size()&&dq.front().r<i+1) dq.pop_front();
+    dq.front().l = i + 1;
     segment seg = segment(i, i + 1, n);
-    while (deq.size() &&
-      f(i, deq.back().l)<f(deq.back().i, deq.back().l))
-        deq.pop_back();
-    if (deq.size()) {
-      int d = 1048576, c = deq.back().l;
-      while (d >>= 1) if (c + d <= deq.back().r)
-        if(f(i, c + d) > f(deq.back().i, c + d)) c += d;
-      deq.back().r = c; seg.l = c + 1;
+    while (dq.size() &&
+      f(i, dq.back().l)<f(dq.back().i, dq.back().l))
+        dq.pop_back();
+    if (dq.size()) {
+      int d = 1 << 20, c = dq.back().l;
+      while (d >>= 1) if (c + d <= dq.back().r)
+        if(f(i, c+d) > f(dq.back().i, c+d)) c += d;
+      dq.back().r = c; seg.l = c + 1;
     }
-    if (seg.l <= n) deq.push_back(seg);
+    if (seg.l <= n) dq.push_back(seg);
   }
 }

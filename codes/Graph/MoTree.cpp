@@ -40,14 +40,14 @@ void traverse( int& origin_u, int u ) {
   for ( int g = lca( origin_u, u ) ; 
     origin_u != g ; origin_u = parent_of[ origin_u ] )
       Diff( origin_u );
-  for ( int v = u ; v != origin_u ; v = parent_of[ v ] )
+  for (int v = u; v != origin_u; v = parent_of[v])
     Diff( v );
   origin_u = u;
 }
 void solve() {
   dfs( 1, 1 );
   while ( stk_ ) block_id[ stk[ -- stk_ ] ] = block_;
-  sort( que, que + q, [] ( const Que& x, const Que& y ){
+  sort( que, que + q, [](const Que& x, const Que& y) {
     return tie( block_id[ x.u ], dfn[ x.v ] )
             < tie( block_id[ y.u ], dfn[ y.v ] );
   } );

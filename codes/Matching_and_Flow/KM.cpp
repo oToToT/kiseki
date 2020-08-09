@@ -23,7 +23,7 @@ private:
       lld d;
       while (ql < qr) {
         for (int x = 0, y = qu[ql++]; x < n; ++x) {
-          if(!vl[x] && slk[x]>=(d=hl[x]+hr[y]-w[x][y])){
+          if(!vl[x]&&slk[x]>=(d=hl[x]+hr[y]-w[x][y])){
             if (pre[x] = y, d) slk[x] = d;
             else if (!check(x)) return;
           }
@@ -51,7 +51,7 @@ public:
     slk.resize(n); pre.resize(n);
     vl.resize(n); vr.resize(n);
   }
-  void set_edge( int u, int v, lld x ) { w[u][v] = x; }
+  void set_edge( int u, int v, lld x ) {w[u][v] = x;}
   lld solve() {
     for (int i = 0; i < n; ++i)
       hl[i] = *max_element(w[i].begin(), w[i].end());

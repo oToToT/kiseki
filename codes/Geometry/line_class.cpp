@@ -5,25 +5,20 @@ struct Line{
   static constexpr long double EPS = 1e-8;
   // ax+by+c = 0
   T a, b, c;
-  Line(): a(0), b(1), c(0){}
-  Line(T _, T __, T ___): a(_), b(__), c(___){
-    assert(fabs(a)>EPS or fabs(b)>EPS);
-  }
+  Line(T _=0, T __=1, T ___=0): a(_), b(__), c(___){
+    assert(fabs(a)>EPS or fabs(b)>EPS);}
   template<typename T2>
     Line(const Line<T2>& x): a(x.a), b(x.b), c(x.c){}
   typedef Point<long double> Pt;
   bool equal(const Line& o, true_type) const {
-    return fabs(a-o.a) < EPS and fabs(b-o.b) < EPS and fabs(c-o.b) < EPS;
-  }
+    return fabs(a-o.a)<EPS &&
+    fabs(b-o.b)<EPS && fabs(c-o.b)<EPS;}
   bool equal(const Line& o, false_type) const {
-    return a==o.a and b==o.b and c==o.c;
-  }
+    return a==o.a and b==o.b and c==o.c;}
   bool operator==(const Line& o) const {
-    return equal(o, is_floating_point<T>());
-  }
+    return equal(o, is_floating_point<T>());}
   bool operator!=(const Line& o) const {
-    return !(*this == o);
-  }
+    return !(*this == o);}
   friend inline bool on_line__(const Point<T>& p, const Line& l, true_type){
     return fabs(l.a*p.x + l.b*p.y + l.c) < EPS;
   }

@@ -1,10 +1,9 @@
 lld crt(lld ans[], lld pri[], int n){
-  lld M = 1;
+  lld M = 1, ret = 0;
   for(int i=0;i<n;i++) M *= pri[i];
-  lld ret = 0;
   for(int i=0;i<n;i++){
-    lld inv = (gcd(M/pri[i], pri[i]).first + pri[i])%pri[i];
-    ret += (ans[i]*(M/pri[i])%M * inv)%M;
+    lld iv = (gcd(M/pri[i],pri[i]).FF+pri[i])%pri[i];
+    ret += (ans[i]*(M/pri[i])%M * iv)%M;
     ret %= M;
   }
   return ret;
