@@ -1,2 +1,4 @@
-CodeBook used by NTU T1
----
+kiseki
+----
+
+ICPC codebook
