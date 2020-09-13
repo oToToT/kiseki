@@ -7,7 +7,7 @@ private:
   };
   int n, st, ed;
   vector<vector<Edge>> G;
-  vector<int> lv;
+  vector<int> lv, idx;
   bool BFS(){
     fill(lv.begin(), lv.end(), -1);
     queue<int> bfs;
@@ -26,7 +26,8 @@ private:
   CapT DFS(int u, CapT f){
     if(u == ed) return f;
     CapT ret = 0;
-    for(auto& e: G[u]){
+    for(int& i = idx[u]; i < (int)G[u].size(); ++i){
+      auto& e = G[u][i];
       if(e.cap <= 0 or lv[e.to]!=lv[u]+1) continue;
       CapT nf = DFS(e.to, min(f, e.cap));
       ret += nf; e.cap -= nf; f -= nf;
@@ -49,6 +50,7 @@ public:
   CapT max_flow(){
     CapT ret = 0;
     while(BFS()){
+      idx.assign(n, 0);
       CapT f = DFS(st, numeric_limits<CapT>::max());
       ret += f;
       if(f == 0) break;
