@@ -15,13 +15,12 @@ vector<int> kmp(const string &s) {
 }
 vector<int> search(const string &s, const string &t) {
   // return 0-indexed occurrence of t in s
-  vector<int> f = kmp(t), res;
+  vector<int> f = kmp(t), r;
   for (int i = 0, k = 0; i < (int)s.size(); ++i) {
-    while(k > 0 && (k == (int)t.size() || s[i] != t[k]))
+    while(k > 0 && (k==(int)t.size() || s[i]!=t[k]))
       k = f[k - 1];
     if (s[i] == t[k]) ++k;
-    if (k == (int)t.size())
-      res.push_back(i - t.size() + 1);
+    if (k == (int)t.size()) r.push_back(i-t.size()+1);
   }
   return res;
 }
