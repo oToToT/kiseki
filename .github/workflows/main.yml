@@ -25,8 +25,8 @@ jobs:
 
       - name: Build PDF
         uses: xu-cheng/latex-action@v2
-        working_directory: pdf/
         with:
+          working_directory: pdf/
           root_file: codebook.tex
           latexmk_use_xelatex: true
 
