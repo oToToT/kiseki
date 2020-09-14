@@ -18,17 +18,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Create Font Dir
-        run: mkdir -p ~/.fonts
 
-      - name: Download NotoSansCJK
-        uses: wei/wget@v1.1.1
-        with:
-          args: -O ~/.fonts/NotoSansCJKtc.otf https://cloud.ototot.tk/fonts/NotoSansCJKtc-Medium_0.otf
-      - name: Download Consolas
-        uses: wei/wget@v1.1.1
-        with:
-          args: -O ~/.fonts/Consolas.ttf https://cloud.ototot.tk/fonts/consola.ttf
       - name: Build PDF
         uses: xu-cheng/latex-action@v2
         with:
@@ -45,6 +35,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
