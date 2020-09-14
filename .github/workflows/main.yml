@@ -7,6 +7,8 @@ name: Release codebook.pdf
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - 'pdf/codebook.pdf'
   pull_request:
     branches: [ master ]
 
@@ -18,11 +20,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Build PDF
         uses: xu-cheng/latex-action@v2
+        working_directory: pdf/
         with:
-          root_file: pdf/codebook.tex
+          root_file: codebook.tex
           latexmk_use_xelatex: true
 
       - name: Create Release
