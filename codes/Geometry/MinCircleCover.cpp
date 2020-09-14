@@ -1,9 +1,8 @@
 template<typename T>
-Circle<llf> MinCircleCover(const vector<Point<T>>& pts){
+Circle<llf> MinCircleCover(const vector<PT>& pts){
 	random_shuffle(ALL(pts));
 	Circle<llf> c = {pts[0], 0};
-	int n = SZ(pts);
-	for(int i=0;i<n;i++){
+	for(int i=0;i<SZ(pts);i++){
 		if(pts[i].in(c)) continue;
 		c = {pts[i], 0};
 		for(int j=0;j<i;j++){

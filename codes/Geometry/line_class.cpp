@@ -46,7 +46,7 @@ struct Line{
     llf delta_y = x.c*y.a - x.a*y.c;
     return Pt(delta_x / delta, delta_y / delta);
   }
-  friend ostream& operator<<(ostream& ss, const Line& o){
+  friend ostream&operator<<(ostream&ss, const Line&o){
     ss<<o.a<<"x+"<<o.b<<"y+"<<o.c<<"=0";
     return ss;
   }
