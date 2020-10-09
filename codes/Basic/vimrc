@@ -3,3 +3,6 @@ se cin et ts=4 sw=4 sts=4 t_Co=256
 syn on
 colorscheme ron
 filetype indent on
+map <F8> <ESC>:w<CR>:!clear && g++ "%" -o "%<" -fsanitize=address -fsanitize=undefined -g && echo success<CR>
+map <F9> <ESC>:w<CR>:!clear && g++ "%" -o "%<" -O2 && echo success<CR>
+map <F10> <ESC>:!./"%<"<CR>
