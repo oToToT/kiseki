@@ -30,7 +30,11 @@ public:
     G[ u ].emplace_back( v, cnt );
     G[ v ].emplace_back( u, cnt ++ );
   }
-  void solve(){ cnt = 1; dfs( 0, 0 ); }
+  void solve(){
+    cnt = 1;
+    for (int i = 0; i < n; ++i)
+      if (not vis[ i ]) dfs(i, i);
+  }
   // the id will be same as insert order, 0-base
   bool is_bridge( int x ) { return bridge[ x ]; }
 } bcc;
