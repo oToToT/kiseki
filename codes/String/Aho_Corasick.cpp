@@ -25,16 +25,21 @@ class AhoCorasick{
       vector< node* > bfs;
       size_t ptr = 0;
       for ( int i = 0 ; i < Z ; ++ i ) {
-        if ( not rt->nxt[ i ] )
+        if ( not rt->nxt[ i ] ) {
+          // uncomment 2 lines to make it DFA
+          // rt->nxt[i] = rt;
           continue;
+        }
         rt->nxt[ i ]->fail = rt;
         bfs.push_back( rt->nxt[ i ] );
       }
       while ( ptr < bfs.size() ) {
         node* u = bfs[ ptr ++ ];
         for ( int i = 0 ; i < Z ; ++ i ) {
-          if ( not u->nxt[ i ] )
+          if ( not u->nxt[ i ] ) {
+            // u->nxt[i] = u->fail->nxt[i];
             continue;
+          }
           node* u_f = u->fail;
           while ( u_f ) {
             if ( not u_f->nxt[ i ] ) {
