@@ -5,12 +5,11 @@ class BigInt{
   #define LOG_BASE_STR "9"
   static constexpr lld BASE = 1000000000;
   static constexpr int LOG_BASE = 9;
-  vector<lld> dig;
-  bool neg;
+  vector<lld> dig; bool neg;
   inline int len() const { return (int) dig.size(); }
   inline int cmp_minus(const BigInt& a) const {
     if(len() == 0 && a.len() == 0) return 0;
-    if(neg ^ a.neg)return (int)a.neg*2 - 1;
+    if(neg ^ a.neg)return a.neg ^ 1;
     if(len()!=a.len())
       return neg?a.len()-len():len()-a.len();
     for(int i=len()-1;i>=0;i--) if(dig[i]!=a.dig[i])
@@ -50,8 +49,7 @@ class BigInt{
     {return cmp_minus(a)>=0;}
   BigInt operator-() const {
     BigInt ret = *this;
-    ret.neg ^= 1;
-    return ret;
+    ret.neg ^= 1; return ret;
   }
   BigInt operator+(const BigInt& a) const {
     if(neg) return -(-(*this)+(-a));
@@ -85,8 +83,7 @@ class BigInt{
         ret.dig[i+1]--;
       }
     }
-    ret.trim();
-    return ret;
+    ret.trim(); return ret;
   }
   BigInt operator*(const BigInt& a) const {
     if(!len()||!a.len()) return 0;
@@ -101,8 +98,7 @@ class BigInt{
           ret.dig[i+j] -= x * BASE;
         }
       }
-    ret.trim();
-    return ret;
+    ret.trim(); return ret;
   }
   BigInt operator/(const BigInt& a) const {
     assert(a.len());
@@ -125,15 +121,12 @@ class BigInt{
   BigInt operator%(const BigInt& a) const {
     return (*this) - (*this) / a * a;
   }
-  friend BigInt abs(BigInt a){
-    a.neg = 1; return a;
-  }
+  friend BigInt abs(BigInt a) { a.neg = 0; return a; }
   friend void swap(BigInt& a, BigInt& b){
     swap(a.dig, b.dig); swap(a.neg, b.neg);
   }
   friend istream& operator>>(istream& ss, BigInt& a){
-    string s; ss >> s; a = s;
-    return ss;
+    string s; ss >> s; a = s; return ss;
   }
   friend ostream&operator<<(ostream&o, const BigInt&a){
     if(a.len() == 0) return o << '0';
