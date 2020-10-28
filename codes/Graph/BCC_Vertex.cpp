@@ -1,58 +1,54 @@
-class BCC{
-  private:
-    int n, ecnt;
-    vector< vector< pair< int, int > > > G;
-    vector< int > low, dfn, id;
-    vector< bool > vis, ap;
-    void dfs( int u, int f, int d ) {
-      int child = 0;
-      dfn[ u ] = low[ u ] = d; vis[ u ] = true;
-      for ( auto e : G[ u ] ) if ( e.first != f ) {
-        if ( vis[ e.first ] ) {
-          low[ u ] = min( low[ u ], dfn[ e.first ] );
-        } else {
-          dfs( e.first, u, d + 1 ); child ++;
-          low[ u ] = min( low[ u ], low[ e.first ] );
-          if ( low[ e.first ] >= d ) ap[ u ] = true;
-        }
-      }
-      if ( u == f and child <= 1 ) ap[ u ] = false;
-    }
-    void mark( int u, int idd ) {
-      // really??????????
-      if ( ap[ u ] ) return;
-      for ( auto e : G[ u ] )
-        if( id[ e.second ] != -1 ) {
-          id[ e.second ] = idd;
-          mark( e.first, idd );
-        }
-    }
-  public:
-    void init( int n_ ) {
-      ecnt = 0, n = n_;
-      G.clear(); G.resize( n );
-      low.resize( n ); dfn.resize( n );
-      ap.clear(); ap.resize( n );
-      vis.clear(); vis.resize( n );
-    }
-    void add_edge( int u, int v ) {
-      G[ u ].emplace_back( v, ecnt );
-      G[ v ].emplace_back( u, ecnt ++ );
-    }
-    void solve() {
-      for ( int i = 0 ; i < n ; ++ i )
-        if ( not vis[ i ] ) dfs( i, i, 0 );
-      id.resize( ecnt );
-      fill( id.begin(), id.end(), -1 );
-      ecnt = 0;
-      for ( int i = 0 ; i < n ; ++ i ) 
-        if ( ap[ i ] ) for ( auto e : G[ i ] )
-          if( id[ e.second ] != -1 ) {
-            id[ e.second ] = ecnt;
-            mark( e.first, ecnt ++ );
-          }
-    }
-    int get_id( int x ) { return id[ x ]; }
-    int count() { return ecnt; }
-    bool is_ap( int u ) { return ap[ u ]; }
-} bcc;
+class BCC {
+	private:
+		int n, t, ecnt;
+		vector<vector<pair<int, int>>> G;
+		vector<int> low, tin, st, bcc;
+		vector<bool> ap, ins;
+		void dfs(int x, int p) {
+			tin[x] = low[x] = ++t;
+			int ch = 0;
+			for (auto u: G[x]) {
+				if (u.first == p) continue;
+				if (not ins[u.second]) {
+					st.push_back(u.second);
+					ins[u.second] = true;
+				}
+				if (tin[u.first]) {
+					low[x] = min(low[x], tin[u.first]);
+					continue;
+				}
+				++ch; dfs(u.first, x);
+				low[x] = min(low[x], low[u.first]);
+				if (low[u.first] >= tin[x]) {
+					ap[x] = true; ++ecnt;
+					while (true) {
+						int e = st.back(); st.pop_back();
+						bcc[e] = ecnt;
+						if (e == u.second) break;
+					}
+				}
+			}
+			if (ch == 1 and p == x) ap[x] = false;
+		}
+	public:
+		void init(int n_) {
+			n = n_, ecnt = 0; st.clear();
+			G.clear(); G.resize(n);
+			low.clear(); tin.clear();
+			ap.assign(n, false);
+		}
+		void add_edge(int u, int v) {
+			G[u].emplace_back(v, ecnt);
+			G[v].emplace_back(u, ecnt++);
+		}
+		void solve() {
+			ecnt = 0; bcc.resize(t);
+			ins.assign(t, false);
+			for (int i = 0; i < n; ++i)
+				if (low[i] == 0) dfs(i, i);
+		}
+		int get_id(int x) { return bcc[x];; }
+		int count() { return ecnt; }
+		bool is_ap(int x) { return ap[x]; }
+};
+
