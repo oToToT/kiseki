@@ -1,28 +1,13 @@
-int n, q, nxt[ N ], to[ N ], hd[ N ];
+int q; vector< int > G[N];
 struct Que{
   int u, v, id;
 } que[ N ];
-void init() {
-  cin >> n >> q;
-  for ( int i = 1 ; i < n ; ++ i ) {
-    int u, v; cin >> u >> v;
-    nxt[ i << 1 | 0 ] = hd[ u ];
-    to[ i << 1 | 0 ] = v;
-    hd[ u ] = i << 1 | 0;
-    nxt[ i << 1 | 1 ] = hd[ v ];
-    to[ i << 1 | 1 ] = u;
-    hd[ v ] = i << 1 | 1;
-  }
-  for ( int i = 0 ; i < q ; ++ i ) {
-    cin >> que[ i ].u >> que[ i ].v; que[ i ].id = i;
-  }
-}
 int dfn[N], dfn_, block_id[N], block_, stk[N], stk_;
 void dfs( int u, int f ) {
   dfn[ u ] = dfn_++; int saved_rbp = stk_;
-  for ( int v_ = hd[ u ] ; v_ ; v_ = nxt[ v_ ] ) {
-    if ( to[ v_ ] == f ) continue;
-    dfs( to[ v_ ], u );
+  for ( int v : G[ u ] ) {
+    if ( v == f ) continue;
+    dfs( v, u );
     if ( stk_ - saved_rbp < SQRT_N ) continue;
     for ( ++ block_ ; stk_ != saved_rbp ; )
        block_id[ stk[ -- stk_ ] ] = block_;
@@ -31,10 +16,8 @@ void dfs( int u, int f ) {
 }
 bool inPath[ N ];
 void Diff( int u ) {
-  if ( inPath[ u ] ^= 1 )
-    // remove this edge
-  else
-    // add this edge
+  if ( inPath[ u ] ^= 1 ) { /*remove this edge*/ }
+  else { /*add this edge*/ }
 }
 void traverse( int& origin_u, int u ) {
   for ( int g = lca( origin_u, u ) ; 
