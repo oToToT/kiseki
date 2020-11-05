@@ -1,5 +1,6 @@
 llf solve(vector<P> v) {
   shuffle(v.begin(), v.end(), mt19937());
+  // maybe could replace vector<P> with only P
   unordered_map<lld, unordered_map<lld,
     unordered_map<lld, vector<P>>>> m;
   llf d = dis(v[0], v[1]);
