@@ -11,7 +11,7 @@ llf anneal() {
     llf prob = min( ( llf ) 1, exp( -delta_c / T ) );
     if ( rnd( rnd_engine ) <= prob )
       S_cur = S_prime, p = p_prime;
-    if ( S_prime < S_best )
+    if ( S_prime < S_best ) // find min
       S_best = S_prime, p_best = p_prime;
   }
   return S_best;
