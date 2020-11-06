@@ -14,6 +14,7 @@
 \usepackage{fancyhdr}								%設定頁首頁尾
 \usepackage{graphicx}								%Graphic
 \usepackage{enumerate}
+\usepackage{changepage}
 \usepackage[compact]{titlesec}    %compact mode for reducing margin
 \usepackage{amsmath}
 \usepackage[CheckSingle, CJKmath]{xeCJK}
@@ -26,7 +27,7 @@
 
 %\usepackage[T1]{fontenc}
 \usepackage{courier}
-\topmargin=0pt
+\topmargin=-1pt
 \headsep=5pt
 \textheight=780pt
 \footskip=0pt
@@ -77,6 +78,7 @@ morekeywords={*},									% if you want to add more keywords to the set
 keywordstyle=\bfseries\color{Blue1},
 commentstyle=\itshape\color{Red4},
 stringstyle=\itshape\color{Green4},
+literate={\ \ }{{\ }}1
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -94,212 +96,163 @@ stringstyle=\itshape\color{Green4},
 \renewcommand{\contentsname}{Contents} 
 
 \scriptsize
+\vspace{-2em}
 \tableofcontents
+\vspace{-1em}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Basic}
-\subsection{vimrc}
-\lstinputlisting{../codes/Basic/vimrc}
-\subsection{Increase Stack}
-\lstinputlisting{../codes/Basic/IncStack.cpp}
-\subsection{Pragma optimization}
-\lstinputlisting{../codes/Basic/Pragma.cpp}
+
+\newcommand{\includecode}[2]{
+  \subsection{#1}
+  \vspace{-0.8em}
+  \lstinputlisting{#2}
+  \vspace{-1.2em}
+}
+
+\newcommand{\includetex}[2]{
+  \subsection{#1}
+  \input{#2}
+  \vspace{-1.2em}
+}
+
+\newcommand{\sectiontitle}[1]{
+  \section{#1}
+  \vspace{-0.5em}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\sectiontitle{Basic}
+
+\includecode{vimrc}{../codes/Basic/vimrc}
+\includecode{Increase Stack}{../codes/Basic/IncStack.cpp}
+\includecode{Pragma Optimization}{../codes/Basic/Pragma.cpp}
 % \subsection{Debugger}
 % \lstinputlisting[language=python]{../codes/Basic/debug_checker.py}
 % \subsection{Quick Random}
 % \lstinputlisting{../codes/Basic/random_generator.cpp}
-\subsection{IO Optimization}
-\lstinputlisting{../codes/Basic/IOOptimize.cpp}
+\includecode{IO Optimization}{../codes/Basic/IOOptimize.cpp}
 
-\section{Data Structure}
-\subsection{Bigint}
-\lstinputlisting{../codes/Data_Structure/Bigint.cpp}
-\subsection{Dark Magic}
-\lstinputlisting{../codes/Data_Structure/ext_pbds.cpp}
+
+\sectiontitle{Data Structure}
+
+\includecode{Bigint}{../codes/Data_Structure/Bigint.cpp}
+\includecode{Dark Magic}{../codes/Data_Structure/ext_pbds.cpp}
 % \subsection{SkewHeap}
 % \lstinputlisting{../codes/Data_Structure/SkewHeap.cpp}
-\subsection{Disjoint Set}
-\lstinputlisting{../codes/Data_Structure/DisjointSet.cpp}
-\subsection{Link-Cut Tree}
-\lstinputlisting{../codes/Data_Structure/LCT.cpp}
-\subsection{LiChao Segment Tree}
-\lstinputlisting{../codes/Data_Structure/LiChao.cpp}
-\subsection{Treap}
-\lstinputlisting{../codes/Data_Structure/Treap.cpp}
-\subsection{SparseTable}
-\lstinputlisting{../codes/Data_Structure/SparseTable.cpp}
-\subsection{Linear Basis}
-\lstinputlisting{../codes/Data_Structure/LinearBasis.cpp}
+\includecode{Disjoint Set}{../codes/Data_Structure/DisjointSet.cpp}
+\includecode{Link-Cut Tree}{../codes/Data_Structure/LCT.cpp}
+\includecode{LiChao Segment Tree}{../codes/Data_Structure/LiChao.cpp}
+\includecode{Treap}{../codes/Data_Structure/Treap.cpp}
+\includecode{Sparse Table}{../codes/Data_Structure/SparseTable.cpp}
+\includecode{Linear Basis}{../codes/Data_Structure/LinearBasis.cpp}
 
-\section{Graph}
-\subsection{Euler Circuit}
-\lstinputlisting{../codes/Graph/EulerCircuit.cpp}
-\subsection{BCC Edge}
-\lstinputlisting{../codes/Graph/BCC_Edge.cpp}
-\subsection{BCC Vertex}
-\lstinputlisting{../codes/Graph/BCC_Vertex.cpp}
-\subsection{2-SAT (SCC)}
-\lstinputlisting{../codes/Graph/2SAT.cpp}
-\subsection{Lowbit Decomposition}
-\lstinputlisting{../codes/Graph/LowbitDecomposition.cpp}
-\subsection{MaxClique}
-\lstinputlisting{../codes/Graph/MaxClique.cpp}
-\subsection{Virtural Tree}
-\lstinputlisting{../codes/Graph/virtual_tree.cpp}
-\subsection{Tree Hashing}
-\lstinputlisting{../codes/Graph/TreeHash.cpp}
-\subsection{Minimum Mean Cycle}
-\lstinputlisting{../codes/Graph/MinMeanCycle.cpp}
-\subsection{Mo's Algorithm on Tree}
-\lstinputlisting{../codes/Graph/MoTree.cpp}
-\subsection{Minimum Steiner Tree}
-\lstinputlisting{../codes/Graph/MinSteinerTree.cpp}
-\subsection{Directed Minimum Spanning Tree}
-\lstinputlisting{../codes/Graph/DirectedMST.cpp}
-\subsection{Dominator Tree}
-\lstinputlisting{../codes/Graph/DominatorTree.cpp}
 
-\section{Matching \& Flow}
-\subsection{Kuhn Munkres}
-\lstinputlisting{../codes/Matching_and_Flow/KM.cpp}
-\subsection{Bipartite Matching}
-\lstinputlisting{../codes/Matching_and_Flow/BI_Pair.cpp}
-\subsection{General Graph Matching}
-\lstinputlisting{../codes/Matching_and_Flow/GeneralMatching.cpp}
-\subsection{Minimum Weight Matching (Clique version)}
-\lstinputlisting{../codes/Matching_and_Flow/WeightedGeneralMatching.cpp}
-\subsection{Flow Models}
-\input{../codes/Matching_and_Flow/FlowModels.tex}
-\subsection{Dinic}
-\lstinputlisting{../codes/Matching_and_Flow/Dinic.cpp}
-\subsection{Minimum Cost Maximum Flow}
-\lstinputlisting{../codes/Matching_and_Flow/CostFlow.cpp}
-\subsection{Global Min-Cut}
-\lstinputlisting{../codes/Matching_and_Flow/SW.cpp}
+\sectiontitle{Graph}
 
-\section{Math}
-\subsection{Prime Table}
-\input{../codes/Math/primes.tex}
-\subsection{$\lfloor \frac{n}{i} \rfloor$ Enumeration}
-\input{../codes/Math/ReciprocalEnum.tex}
-\subsection{ax+by=gcd}
-\lstinputlisting{../codes/Math/ExtendedGCD.cpp}
-\subsection{Pollard Rho}
-\lstinputlisting{../codes/Math/PollardRho.cpp}
-\subsection{Pi Count (Linear Sieve)}
-\lstinputlisting{../codes/Math/MeisselLehmer.cpp}
-\subsection{Range Sieve}
-\lstinputlisting{../codes/Math/RangeSieve.cpp}
-\subsection{Miller Rabin}
-\lstinputlisting{../codes/Math/miller_rabin.cpp}
-\subsection{Inverse Element}
-\lstinputlisting{../codes/Math/Inverse.cpp}
-\subsection{Euler Phi Function}
-\lstinputlisting{../codes/Math/euler_phi.cpp}
-\subsection{Gauss Elimination}
-\lstinputlisting{../codes/Math/GaussElimination.cpp}
-\subsection{Fast Fourier Transform}
-\lstinputlisting{../codes/Math/FFT.cpp}
-\subsection{High Speed Linear Recurrence}
-\lstinputlisting{../codes/Math/hdlr.cpp}
-\subsection{Chinese Remainder}
-\lstinputlisting{../codes/Math/ChineseRemainder.cpp}
-\subsection{Berlekamp Massey}
-\lstinputlisting{../codes/Math/Berlekamp-Massey.cpp}
-\subsection{NTT}
-\lstinputlisting{../codes/Math/NTT_eddy.cpp}
-\subsection{Polynomial Operations}
-\lstinputlisting{../codes/Math/PolynomialOp.cpp}
+\includecode{Euler Circuit}{../codes/Graph/EulerCircuit.cpp}
+\includecode{BCC Edge}{../codes/Graph/BCC_Edge.cpp}
+\includecode{BCC Vertex}{../codes/Graph/BCC_Vertex.cpp}
+\includecode{2-SAT (SCC)}{../codes/Graph/2SAT.cpp}
+\includecode{Lowbit Decomposition}{../codes/Graph/LowbitDecomposition.cpp}
+\includecode{MaxClique}{../codes/Graph/MaxClique.cpp}
+\includecode{Virtural Tree}{../codes/Graph/virtual_tree.cpp}
+\includecode{Tree Hashing}{../codes/Graph/TreeHash.cpp}
+\includecode{Minimum Mean Cycle}{../codes/Graph/MinMeanCycle.cpp}
+\includecode{Mo's Algorithm on Tree}{../codes/Graph/MoTree.cpp}
+\includecode{Minimum Steiner Tree}{../codes/Graph/MinSteinerTree.cpp}
+\includecode{Directed Minimum Spanning Tree}{../codes/Graph/DirectedMST.cpp}
+\includecode{Dominator Tree}{../codes/Graph/DominatorTree.cpp}
+
+
+\sectiontitle{Matching \& Flow}
+
+\includecode{Kuhn Munkres}{../codes/Matching_and_Flow/KM.cpp}
+\includecode{Bipartite Matching}{../codes/Matching_and_Flow/BI_Pair.cpp}
+\includecode{General Graph Matching}{../codes/Matching_and_Flow/GeneralMatching.cpp}
+\includecode{Minimum Weight Matching (Clique version)}{../codes/Matching_and_Flow/WeightedGeneralMatching.cpp}
+\includetex{Flow Models}{../codes/Matching_and_Flow/FlowModels.tex}
+\includecode{Dinic}{../codes/Matching_and_Flow/Dinic.cpp}
+\includecode{Minimum Cost Maximum Flow}{../codes/Matching_and_Flow/CostFlow.cpp}
+\includecode{Global Min-Cut}{../codes/Matching_and_Flow/SW.cpp}
+
+
+\sectiontitle{Math}
+
+\includetex{Prime Table}{../codes/Math/primes.tex}
+\includetex{$\lfloor \frac{n}{i} \rfloor$ Enumeration}{../codes/Math/ReciprocalEnum.tex}
+\includecode{ax+by=gcd}{../codes/Math/ExtendedGCD.cpp}
+\includecode{Pollard Rho}{../codes/Math/PollardRho.cpp}
+\includecode{Pi Count (Linear Sieve)}{../codes/Math/MeisselLehmer.cpp}
+\includecode{Range Sieve}{../codes/Math/RangeSieve.cpp}
+\includecode{Miller Rabin}{../codes/Math/miller_rabin.cpp}
+\includecode{Inverse Element}{../codes/Math/Inverse.cpp}
+\includecode{Euler Phi Function}{../codes/Math/euler_phi.cpp}
+\includecode{Gauss Elimination}{../codes/Math/GaussElimination.cpp}
+\includecode{Fast Fourier Transform}{../codes/Math/FFT.cpp}
+\includecode{High Speed Linear Recurrence}{../codes/Math/hdlr.cpp}
+\includecode{Chinese Remainder}{../codes/Math/ChineseRemainder.cpp}
+\includecode{Berlekamp Massey}{../codes/Math/Berlekamp-Massey.cpp}
+\includecode{NTT}{../codes/Math/NTT_eddy.cpp}
+\includecode{Polynomial Operations}{../codes/Math/PolynomialOp.cpp}
 % \subsection{Polynomial Sqrt}
 % \lstinputlisting{../codes/Math/PolySqrt.cpp}
 % \subsection{Polynomial Division}
 % \lstinputlisting{../codes/Math/PolyDiv.cpp}
-\subsection{FWT}
-\lstinputlisting{../codes/Math/FWT.cpp}
-\subsection{DiscreteLog}
-\lstinputlisting{../codes/Math/DiscreteLog.cpp}
-\subsection{Quadratic residue}
-\lstinputlisting{../codes/Math/QuadraticResidue.cpp}
-\subsection{De-Bruijn}
-\lstinputlisting{../codes/Math/debruijn.cpp}
-\subsection{Simplex Construction}
-\input{../codes/Math/SimplexConstruction.tex}
-\subsection{Simplex}
-\lstinputlisting{../codes/Math/simplex.cpp}
+\includecode{FWT}{../codes/Math/FWT.cpp}
+\includecode{DiscreteLog}{../codes/Math/DiscreteLog.cpp}
+\includecode{Quadratic residue}{../codes/Math/QuadraticResidue.cpp}
+\includecode{De-Bruijn}{../codes/Math/debruijn.cpp}
+\includetex{Simplex Construction}{../codes/Math/SimplexConstruction.tex}
+\includecode{Simplex}{../codes/Math/simplex.cpp}
 
-\section{Geometry}
+
+\sectiontitle{Geometry}
+
 %\subsection{Point Class}
 %\lstinputlisting{../codes/Geometry/point_class.cpp}
-\subsection{Circle Class}
-\lstinputlisting{../codes/Geometry/circle_class.cpp}
-\subsection{Segment Class}
-\lstinputlisting{../codes/Geometry/segment_class.cpp}
-\subsection{Line Class}
-\lstinputlisting{../codes/Geometry/line_class.cpp}
-\subsection{Triangle Circumcentre}
-\lstinputlisting{../codes/Geometry/outer_point.cpp}
-\subsection{2D Convex Hull}
-\lstinputlisting{../codes/Geometry/2D_ConvexHull.cpp}
-\subsection{2D Farthest Pair}
-\lstinputlisting{../codes/Geometry/2D_FarthestPair.cpp}
-\subsection{2D Closest Pair}
-\lstinputlisting{../codes/Geometry/2D_ClosestPair.cpp}
-\subsection{kD Closest Pair (3D ver.)}
-\lstinputlisting{../codes/Geometry/kdClosestPair.cpp}
-\subsection{Simulated Annealing}
-\lstinputlisting{../codes/Geometry/SimulateAnnealing.cpp}
-\subsection{Half Plane Intersection}
-\lstinputlisting{../codes/Geometry/HalfPlaneInter.cpp}
-\subsection{Ternary Search on Integer}
-\lstinputlisting{../codes/Geometry/Ternary_Search.cpp}
-\subsection{Minimum Covering Circle}
-\lstinputlisting{../codes/Geometry/MinCircleCover.cpp}
-\subsection{KDTree (Nearest Point)}
-\lstinputlisting{../codes/Geometry/KD_Tree.cpp}
+\includecode{Circle Class}{../codes/Geometry/circle_class.cpp}
+\includecode{Segment Class}{../codes/Geometry/segment_class.cpp}
+\includecode{Line Class}{../codes/Geometry/line_class.cpp}
+\includecode{Triangle Circumcentre}{../codes/Geometry/outer_point.cpp}
+\includecode{2D Convex Hull}{../codes/Geometry/2D_ConvexHull.cpp}
+\includecode{2D Farthest Pair}{../codes/Geometry/2D_FarthestPair.cpp}
+\includecode{2D Closest Pair}{../codes/Geometry/2D_ClosestPair.cpp}
+\includecode{kD Closest Pair (3D ver.)}{../codes/Geometry/kdClosestPair.cpp}
+\includecode{Simulated Annealing}{../codes/Geometry/SimulateAnnealing.cpp}
+\includecode{Half Plane Intersection}{../codes/Geometry/HalfPlaneInter.cpp}
+\includecode{Ternary Search on Integer}{../codes/Geometry/Ternary_Search.cpp}
+\includecode{Minimum Covering Circle}{../codes/Geometry/MinCircleCover.cpp}
+\includecode{KDTree (Nearest Point)}{../codes/Geometry/KD_Tree.cpp}
 
-\section{Stringology}
-\subsection{Hash}
-\lstinputlisting{../codes/String/Hash.cpp}
-\subsection{Suffix Array}
-\lstinputlisting{../codes/String/Suffix_Array.cpp}
-\subsection{Aho-Corasick Algorithm}
-\lstinputlisting{../codes/String/Aho_Corasick.cpp}
-\subsection{Suffix Automaton}
-\lstinputlisting{../codes/String/SAM.cpp}
-\subsection{KMP}
-\lstinputlisting{../codes/String/KMP.cpp}
-\subsection{Z value}
-\lstinputlisting{../codes/String/Z_Value.cpp}
-\subsection{Manacher}
-\lstinputlisting{../codes/String/Manacher.cpp}
-\subsection{Lexico Smallest Rotation}
-\lstinputlisting{../codes/String/smallest_rotation.cpp}
-\subsection{BWT}
-\lstinputlisting{../codes/String/BWT.cpp}
-\subsection{Palindromic Tree}
-\lstinputlisting{../codes/String/palindromic_tree.cpp}
 
-\section{Misc}
-\subsection{Theorems}
-\input{../codes/Misc/Theorems.tex}
-\subsection{MaximumEmptyRect}
-\lstinputlisting{../codes/Misc/EmptyRect.cpp}
-\subsection{DP-opt Condition}
-\input{../codes/Misc/DPcondition.tex}
-\subsection{Convex 1D/1D DP}
-\lstinputlisting{../codes/Misc/Convex1D1D.cpp}
-\subsection{ConvexHull Optimization}
-\lstinputlisting{../codes/Misc/SlopeDP.cpp}
-\subsection{Josephus Problem}
-\lstinputlisting{../codes/Misc/Josephus.cpp}
-\subsection{Cactus Matching}
-\lstinputlisting{../codes/Misc/CactusMatching.cpp}
-\subsection{DLX}
-\lstinputlisting{../codes/Misc/DLX.cpp}
-\subsection{Tree Knapsack}
-\lstinputlisting{../codes/Misc/tree_knapsack.cpp}
-\subsection{N Queens Problem}
-\lstinputlisting{../codes/Misc/NQueens.cpp}
+\sectiontitle{Stringology}
+
+\includecode{Hash}{../codes/String/Hash.cpp}
+\includecode{Suffix Array}{../codes/String/Suffix_Array.cpp}
+\includecode{Aho-Corasick Algorithm}{../codes/String/Aho_Corasick.cpp}
+\includecode{Suffix Automaton}{../codes/String/SAM.cpp}
+\includecode{KMP}{../codes/String/KMP.cpp}
+\includecode{Z value}{../codes/String/Z_Value.cpp}
+\includecode{Manacher}{../codes/String/Manacher.cpp}
+\includecode{Lexico Smallest Rotation}{../codes/String/smallest_rotation.cpp}
+\includecode{BWT}{../codes/String/BWT.cpp}
+\includecode{Palindromic Tree}{../codes/String/palindromic_tree.cpp}
+
+
+\sectiontitle{Misc}
+
+\includetex{Theorems}{../codes/Misc/Theorems.tex}
+\includecode{MaximumEmptyRect}{../codes/Misc/EmptyRect.cpp}
+\includetex{DP-opt Condition}{../codes/Misc/DPcondition.tex}
+\includecode{Convex 1D/1D DP}{../codes/Misc/Convex1D1D.cpp}
+\includecode{ConvexHull Optimization}{../codes/Misc/SlopeDP.cpp}
+\includecode{Josephus Problem}{../codes/Misc/Josephus.cpp}
+\includecode{Cactus Matching}{../codes/Misc/CactusMatching.cpp}
+\includecode{DLX}{../codes/Misc/DLX.cpp}
+\includecode{Tree Knapsack}{../codes/Misc/tree_knapsack.cpp}
+\includecode{N Queens Problem}{../codes/Misc/NQueens.cpp}
 
 \end{document}
