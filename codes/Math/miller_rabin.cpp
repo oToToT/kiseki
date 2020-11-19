@@ -1,9 +1,9 @@
 bool isprime(llu x){
   static llu magic[]={2,325,9375,28178,\
                     450775,9780504,1795265022};
-  static auto witn=[](llu a,llu u,llu n,int t){
-    a = mpow(a,u,n);
-    if (!a)return 0;
+  static auto witn=[](llu a,llu u,llu n,int t)
+  ->bool{
+    if (!(a = mpow(a,u,n)))return 0;
     while(t--){
       llu a2=mul(a,a,n);
       if(a2==1 && a!=1 && a!=n-1)
