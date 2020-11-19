@@ -2,7 +2,7 @@ llf solve(vector<P> v) {
   shuffle(v.begin(), v.end(), mt19937());
   // maybe could replace vector<P> with only P
   unordered_map<lld, unordered_map<lld,
-    unordered_map<lld, vector<P>>>> m;
+    unordered_map<lld, vector<int>>>> m;
   llf d = dis(v[0], v[1]);
   auto Idx = [&d] (lld x) -> lld {
     return round(x * 2 / d) + 0.1; };
@@ -10,7 +10,7 @@ llf solve(vector<P> v) {
     m.clear();
     for (int i = 0; i < k; ++i)
       m[Idx(v[i].x)][Idx(v[i].y)]
-        [Idx(v[i].z)].push_back(v[i]);
+        [Idx(v[i].z)].push_back(i);
   };
   rebuild_m(2);
   for (size_t i = 2; i < v.size(); ++i) {
@@ -28,8 +28,8 @@ llf solve(vector<P> v) {
           const lld nz = z + kz;
           if (mmm.find(nz) == mmm.end()) continue;
           for (auto p: mmm[nz]) {
-            if (dis(p, v[i]) < d) {
-              d = dis(p, v[i]);
+            if (dis(v[p], v[i]) < d) {
+              d = dis(v[p], v[i]);
               found = true;
             }
           }
@@ -37,7 +37,7 @@ llf solve(vector<P> v) {
       }
     }
     if (found) rebuild_m(i + 1);
-    else m[kx][ky][kz].push_back(v[i]);
+    else m[kx][ky][kz].push_back(i);
   }
   return d;
 }
