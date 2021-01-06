@@ -1,4 +1,3 @@
-// Baby-step Giant-step Algorithm
 lld BSGS(lld P, lld B, lld N) {
   // find B^L = N mod P
   unordered_map<lld, int> R;
