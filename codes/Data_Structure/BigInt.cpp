@@ -131,7 +131,7 @@ class BigInt{
   friend ostream&operator<<(ostream&o, const BigInt&a){
     if(a.len() == 0) return o << '0';
     if(a.neg) o << '-';
-    ss << o.dig.back();
+    o << a.dig.back();
     for(int i=a.len()-2;i>=0;i--)
       o<<setw(LOG_BASE)<<setfill('0')<<a.dig[i];
     return o;
