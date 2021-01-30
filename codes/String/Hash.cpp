@@ -4,7 +4,7 @@ class Hash {
     vector<int> h, p;
   public:
     void init(const string &s){
-      h.assign(s.size(), 0); p.resize(s.size());
+      h.assign(s.size()+1, 0); p.resize(s.size()+1);
       for (size_t i = 0; i < s.size(); ++i)
         h[i + 1] = add(mul(h[i], P), s[i]);
       generate(p.begin(), p.end(),[x=1,y=1,this]()
