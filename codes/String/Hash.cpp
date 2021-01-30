@@ -7,8 +7,8 @@ class Hash {
       h.assign(s.size(), 0); p.resize(s.size());
       for (size_t i = 0; i < s.size(); ++i)
         h[i + 1] = add(mul(h[i], P), s[i]);
-      generate(p.begin(), p.end(),
-          [x=1, this]()mutable{return x=mul(x, P);});
+      generate(p.begin(), p.end(),[x=1,y=1,this]()
+          mutable{y=x;x=mul(x,P);return y});
     }
     int query(int l, int r){ // 1-base (l, r]
       return sub(h[r], mul(h[l], p[r-l]));}
