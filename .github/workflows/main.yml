@@ -34,7 +34,7 @@ jobs:
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: auto build codebook
+          commit_message: auto build codebook - ${{github.head_ref}}
 
       # - name: Create Release
       #   id: create_release
