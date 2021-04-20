@@ -8,7 +8,8 @@ using __gnu_pbds::thin_heap_tag;
 template<typename T>
 using pbds_heap=__gnu_pbds::prioity_queue<T,less<T>,\
                                      pairing_heap_tag>;
-// a.join(b), pq.modify(pq.push(10), 87)
+// __gnu_pbds::priority_queue<T,less<T>>::point_iterator
+// x = pq.push(10); pq.modify(x, 87); a.join(b);
 using __gnu_pbds::rb_tree_tag;
 using __gnu_pbds::ov_tree_tag;
 using __gnu_pbds::splay_tree_tag;
