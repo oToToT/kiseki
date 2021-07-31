@@ -6,9 +6,6 @@ void Z_value() {
   for(i=1;i<len;i++) {
     j=max(min(z[i-left],right-i),0);
     for(;i+j<len&&s[i+j]==s[j];j++);
-    if(i+(z[i] = j)>right) {
-      right=i+z[i];
-      left=i;
-    }
+    if(i+(z[i]=j)>right)right=i+z[left=i];
   }
 }
